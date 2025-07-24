@@ -37,10 +37,10 @@ class PizzaApp {
         }
 
         // Render search section
-        const searchElement = document.getElementById('search-section');
-        if (searchElement) {
-            searchElement.innerHTML = '';
-        }
+        // const searchElement = document.getElementById('search-section');
+        // if (searchElement) {
+        //     searchElement.innerHTML = '';
+        // }
 
         // Render featured section
         const featuredElement = document.getElementById('featured-section');
@@ -133,26 +133,26 @@ class PizzaApp {
         this.showNotification(`${itemName} added to cart!`, 'success');
     }
 
-    showAddToCartAnimation(menuItem) {
-        const priceBtn = menuItem.querySelector('.price-btn');
-        if (!priceBtn) return;
+    // showAddToCartAnimation(menuItem) {
+    //     const priceBtn = menuItem.querySelector('.price-btn');
+    //     if (!priceBtn) return;
 
-        // Store original text
-        const originalText = priceBtn.innerHTML;
+    //     // Store original text
+    //     const originalText = priceBtn.innerHTML;
         
-        // Change to success state
-        priceBtn.innerHTML = '<span class="truncate">Added!</span>';
-        priceBtn.style.backgroundColor = '#16a34a';
-        priceBtn.style.transform = 'scale(0.95)';
+    //     // Change to success state
+    //     priceBtn.innerHTML = '<span class="truncate">Added!</span>';
+    //     priceBtn.style.backgroundColor = '#16a34a';
+    //     priceBtn.style.transform = 'scale(0.95)';
         
-        // Reset after animation
-        setTimeout(() => {
-            priceBtn.style.transition = 'all 0.3s ease';
-            priceBtn.innerHTML = originalText;
-            priceBtn.style.backgroundColor = '#494222';
-            priceBtn.style.transform = 'scale(1)';
-        }, 1500);
-    }
+    //     // Reset after animation
+    //     setTimeout(() => {
+    //         priceBtn.style.transition = 'all 0.3s ease';
+    //         priceBtn.innerHTML = originalText;
+    //         priceBtn.style.backgroundColor = '#494222';
+    //         priceBtn.style.transform = 'scale(1)';
+    //     }, 1500);
+    // }
 
     handleCartClick() {
         console.log('Cart clicked');
@@ -272,13 +272,13 @@ class PizzaApp {
         }, 3000);
     }
 
-    // Public API methods
-    addToCart(itemId) {
-        const menuItem = document.querySelector(`[data-id="${itemId}"]`);
-        if (menuItem) {
-            this.handleAddToCart(menuItem);
-        }
-    }
+    // // Public API methods
+    // addToCart(itemId) {
+    //     const menuItem = document.querySelector(`[data-id="${itemId}"]`);
+    //     if (menuItem) {
+    //         this.handleAddToCart(menuItem);
+    //     }
+    // }
 
     filterByCategory(category) {
         FilterManager.toggleFilter(category);
