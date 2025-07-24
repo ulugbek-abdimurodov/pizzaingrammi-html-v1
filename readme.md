@@ -21,7 +21,7 @@ pizzaingrammi/
 
 ### Core Functionality
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Advanced Filtering**: Filter by category (Classic, Specialty, Vegan, Gluten-free, Spicy)
+- **Advanced Filtering**: Filter by category (classica, Specialità, Vegana, senza-glutine, Spicy)
 - **Smooth Animations**: Fade-in effects and smooth transitions
 - **Interactive UI**: Hover effects, button animations, and visual feedback
 
@@ -72,19 +72,19 @@ Each pizza item includes:
 {
     id: 1,
     name: "Margherita",
-    description: "Classic pizza with tomato sauce, mozzarella, and basil.",
+    description: "classica pizza with tomato sauce, mozzarella, and basil.",
     price: "€5.99",
-    category: ["classic"],
+    category: ["classica"],
     tags: ["popular"],
     image: "https://example.com/image.jpg"
 }
 ```
 
 ### Categories
-- **Classic**: Traditional pizza recipes
-- **Specialty**: Gourmet and unique combinations
-- **Vegan**: Plant-based options
-- **Gluten-free**: Celiac-friendly options
+- **classica**: Traditional pizza recipes
+- **Specialità**: Gourmet and unique combinations
+- **Vegana**: Plant-based options
+- **senza-glutine**: Celiac-friendly options
 - **Spicy**: Heat lovers' choices
 
 ## 🔧 Customization
@@ -98,7 +98,7 @@ Edit `js/data.js` and add items to the `menuItems` array:
     name: "Your Pizza",
     description: "Your description here",
     price: "€X.XX",
-    category: ["specialty"], // Array of categories
+    category: ["Specialità"], // Array of categories
     tags: ["custom"], // Array of tags
     image: "your-image-url"
 }

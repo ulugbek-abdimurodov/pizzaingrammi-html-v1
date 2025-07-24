@@ -93,11 +93,10 @@ body {
     font-weight: 500;
 }
 
-.badge-classic { background-color: #16a34a; }
-.badge-specialty { background-color: #9333ea; }
-.badge-vegan { background-color: #2563eb; }
-.badge-gluten-free { background-color: #dc2626; }
-.badge-spicy { background-color: #ea580c; }
+.badge-classica { background-color: #16a34a; }
+.badge-Specialità { background-color: #9333ea; }
+.badge-Vegana { background-color: #2563eb; }
+.badge-senza-glutine { background-color: #dc2626; }
 
 /* Menu Item Animation */
 .pizza-item {

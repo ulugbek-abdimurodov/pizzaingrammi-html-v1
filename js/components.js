@@ -25,7 +25,7 @@ const Components = {
         `).join('');
 
         return `
-            <h2 class="section-title">Featured</h2>
+            <h2 class="section-title">Hot</h2>
             <div class="flex overflow-y-auto scroll-container">
                 <div class="flex items-stretch p-4 gap-3">
                     ${featuredHTML}
@@ -74,7 +74,7 @@ const Components = {
 
         return `
             <div class="px-4 py-3">
-                <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Filter Options</h3>
+                <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Filter</h3>
                 <div class="filter-container flex gap-2 flex-wrap">
                     ${filterButtons}
                 </div>
