@@ -23,7 +23,7 @@ body {
 
 .main-content {
     flex: 1;
-    padding-bottom: 100px; /* Space for bottom navigation */
+    padding-bottom: 20px; /* Reduced padding since no bottom nav */
 }
 
 /* Component Styles */
@@ -84,34 +84,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Price Button */
-.price-btn {
-    display: flex;
-    min-width: 84px;
-    max-width: 480px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 9999px;
-    height: 2rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    background-color: #494222;
-    color: white;
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: normal;
-    width: fit-content;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.price-btn:hover {
-    background-color: #5a4d2a;
-    transform: translateY(-1px);
-}
-
 /* Badge Styles */
 .badge {
     font-size: 0.75rem;
@@ -142,8 +114,6 @@ body {
     margin: 0;
     overflow: hidden;
 }
-
-
 
 /* Responsive Design */
 @media (max-width: 768px) {

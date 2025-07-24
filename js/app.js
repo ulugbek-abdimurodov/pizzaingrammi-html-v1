@@ -23,7 +23,7 @@ class PizzaApp {
             this.bindGlobalEvents();
             this.isInitialized = true;
             
-            console.log('Pizzaingrammi app initialized successfully!');
+            console.log('Pizzaingrammi menu app initialized successfully!');
         } catch (error) {
             console.error('Error initializing app:', error);
         }
@@ -35,12 +35,6 @@ class PizzaApp {
         if (headerElement) {
             headerElement.innerHTML = Components.createHeader();
         }
-
-        // Render search section
-        // const searchElement = document.getElementById('search-section');
-        // if (searchElement) {
-        //     searchElement.innerHTML = '';
-        // }
 
         // Render featured section
         const featuredElement = document.getElementById('featured-section');
@@ -60,12 +54,6 @@ class PizzaApp {
             filterElement.innerHTML = Components.createFilterSection();
         }
 
-        // Render bottom navigation
-        // const bottomNavElement = document.getElementById('bottom-nav');
-        // if (bottomNavElement) {
-        //     bottomNavElement.innerHTML = Components.createBottomNav();
-        // }
-
         // Render initial menu items
         Components.renderMenuItems();
     }
@@ -73,34 +61,9 @@ class PizzaApp {
     initializeModules() {
         // Initialize filter manager
         FilterManager.init();
-        
-        // Initialize search manager
-        SearchManager.init();
     }
 
     bindGlobalEvents() {
-        // Handle price button clicks
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.price-btn')) {
-                e.preventDefault();
-                const menuItem = e.target.closest('.pizza-item');
-                if (menuItem) {
-                    this.handleAddToCart(menuItem);
-                }
-            }
-        });
-
-        // Handle cart button clicks
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('button')) {
-                const button = e.target.closest('button');
-                const svg = button.querySelector('svg');
-                if (svg && svg.querySelector('path[d*="ShoppingCart"]')) {
-                    this.handleCartClick();
-                }
-            }
-        });
-
         // Handle scroll events for header effects
         let lastScrollTop = 0;
         window.addEventListener('scroll', () => {
@@ -119,46 +82,6 @@ class PizzaApp {
         });
     }
 
-    handleAddToCart(menuItem) {
-        const itemId = menuItem.dataset.id;
-        const itemName = menuItem.dataset.name;
-        
-        // Add visual feedback
-        this.showAddToCartAnimation(menuItem);
-        
-        // In a real app, this would add to cart state
-        console.log(`Added ${itemName} to cart (ID: ${itemId})`);
-        
-        // Show temporary success message
-        this.showNotification(`${itemName} added to cart!`, 'success');
-    }
-
-    // showAddToCartAnimation(menuItem) {
-    //     const priceBtn = menuItem.querySelector('.price-btn');
-    //     if (!priceBtn) return;
-
-    //     // Store original text
-    //     const originalText = priceBtn.innerHTML;
-        
-    //     // Change to success state
-    //     priceBtn.innerHTML = '<span class="truncate">Added!</span>';
-    //     priceBtn.style.backgroundColor = '#16a34a';
-    //     priceBtn.style.transform = 'scale(0.95)';
-        
-    //     // Reset after animation
-    //     setTimeout(() => {
-    //         priceBtn.style.transition = 'all 0.3s ease';
-    //         priceBtn.innerHTML = originalText;
-    //         priceBtn.style.backgroundColor = '#494222';
-    //         priceBtn.style.transform = 'scale(1)';
-    //     }, 1500);
-    // }
-
-    handleCartClick() {
-        console.log('Cart clicked');
-        this.showNotification('Cart functionality coming soon!', 'info');
-    }
-
     handleScroll(lastScrollTop) {
         const currentScrollTop = window.pageYOffset;
         const header = document.getElementById('header');
@@ -171,17 +94,6 @@ class PizzaApp {
         } else {
             header.style.boxShadow = 'none';
         }
-
-        // Optional: Hide/show header on scroll (uncomment if desired)
-        /*
-        if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
-            // Scrolling down
-            header.style.transform = 'translateY(-100%)';
-        } else {
-            // Scrolling up
-            header.style.transform = 'translateY(0)';
-        }
-        */
     }
 
     handleResize() {
@@ -199,29 +111,10 @@ class PizzaApp {
     }
 
     handleKeyboardShortcuts(e) {
-        // Search shortcut (Ctrl/Cmd + K)
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-            e.preventDefault();
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.focus();
-                searchInput.select();
-            }
-        }
-
-        // Clear search (Escape)
-        if (e.key === 'Escape') {
-            const searchInput = document.getElementById('searchInput');
-            if (searchInput && searchInput === document.activeElement) {
-                SearchManager.clearSearch();
-            }
-        }
-
         // Reset filters (Ctrl/Cmd + R)
         if ((e.ctrlKey || e.metaKey) && e.key === 'r' && !e.shiftKey) {
             e.preventDefault();
             FilterManager.reset();
-            SearchManager.clearSearch();
             this.showNotification('Filters reset!', 'info');
         }
     }
@@ -272,24 +165,9 @@ class PizzaApp {
         }, 3000);
     }
 
-    // // Public API methods
-    // addToCart(itemId) {
-    //     const menuItem = document.querySelector(`[data-id="${itemId}"]`);
-    //     if (menuItem) {
-    //         this.handleAddToCart(menuItem);
-    //     }
-    // }
-
+    // Public API methods
     filterByCategory(category) {
         FilterManager.toggleFilter(category);
-    }
-
-    searchFor(term) {
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.value = term;
-            SearchManager.performSearch(term);
-        }
     }
 }
 
