@@ -308,9 +308,9 @@ class PizzaChatbot {
             </div>
 
             <!-- Chatbot Container -->
-            <div id="chatbot-container" class="fixed bottom-6 right-6 w-80 h-96 bg-[#232010] rounded-lg shadow-xl z-40 transform translate-y-full opacity-0 transition-all duration-300 border border-[#494222] hidden">
+            <div id="chatbot-container" class="fixed bottom-6 right-6 w-80 h-[500px] bg-[#232010] rounded-lg shadow-xl z-40 transform translate-y-full opacity-0 transition-all duration-300 border border-[#494222] hidden flex flex-col">
                 <!-- Header -->
-                <div class="bg-[#eec80b] text-[#232010] p-4 rounded-t-lg flex justify-between items-center">
+                <div class="bg-[#eec80b] text-[#232010] p-3 rounded-t-lg flex justify-between items-center flex-shrink-0">
                     <div class="flex items-center gap-2">
                         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                         <span class="font-bold text-sm">Pizzaingrammi Assistant</span>
@@ -323,12 +323,12 @@ class PizzaChatbot {
                 </div>
 
                 <!-- Messages Area -->
-                <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto h-64 space-y-3">
+                <div id="chatbot-messages" class="flex-1 p-3 overflow-y-auto space-y-3 min-h-0">
                     <!-- Messages will be dynamically added here -->
                 </div>
 
                 <!-- Input Area -->
-                <div id="chatbot-options" class="p-4 border-t border-[#494222] max-h-24 overflow-y-auto">
+                <div id="chatbot-options" class="p-3 border-t border-[#494222] flex-shrink-0 max-h-40 overflow-y-auto">
                     <!-- Options will be dynamically added here -->
                 </div>
             </div>
@@ -451,8 +451,10 @@ class PizzaChatbot {
         options.forEach((option, index) => {
             setTimeout(() => {
                 const button = document.createElement('button');
-                button.className = 'w-full text-left p-2 mb-2 bg-[#494222] hover:bg-[#5a4d2a] text-white rounded-lg transition-all duration-200 text-sm transform hover:scale-105 last:mb-0';
+                button.className = 'w-full text-left p-2 mb-1 bg-[#494222] hover:bg-[#5a4d2a] text-white rounded-lg transition-all duration-200 text-xs transform hover:scale-[1.02] last:mb-0 break-words';
                 button.textContent = option.text;
+                button.style.wordWrap = 'break-word';
+                button.style.whiteSpace = 'normal';
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
