@@ -78,6 +78,7 @@ const ChatbotResponses = {
             options: [
                 { text: "🍟 Frittatine", value: "sides" },
                 { text: "🥤 Bevande", value: "beverages" },
+                { text: "🧁 Dessert", value: "desserts" },
                 { text: "✅ No grazie, solo la pizza", value: "pizza_only" }
             ]
         };
@@ -209,6 +210,10 @@ const ChatbotLogic = {
                 
             case 'beverages':
                 this.showCategoryInfo('bevande', chatbot);
+                break;
+
+            case 'desserts':
+                this.showCategoryInfo('desserts', chatbot);
                 break;
                 
             case 'opening_hours':
