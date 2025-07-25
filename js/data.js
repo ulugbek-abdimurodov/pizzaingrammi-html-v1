@@ -257,7 +257,7 @@ const PizzaData = {
         { id: 'classica', label: 'Classica', active: false },
         { id: 'Specialità', label: 'Specialità', active: false },
         { id: 'Vegana', label: 'Vegana', active: false },
-        { id: 'senza-glutine', label: 'senza-glutine', active: false }
+        { id: 'senza-glutine', label: 'Senza-glutine', active: false }
     ],
 
     // Menu categories
