@@ -21,7 +21,7 @@ pizzaingrammi/
 
 ### Core Functionality
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Advanced Filtering**: Filter by category (classica, Specialità, Vegana, senza-glutine, Spicy)
+- **Advanced Filtering**: Filter by category (classica, Pizze-d’autore, Vegana, senza-glutine)
 - **Smooth Animations**: Fade-in effects and smooth transitions
 - **Interactive UI**: Hover effects, button animations, and visual feedback
 
@@ -82,7 +82,7 @@ Each pizza item includes:
 
 ### Categories
 - **classica**: Traditional pizza recipes
-- **Specialità**: Gourmet and unique combinations
+- **Pizze-d’autore**: Gourmet and unique combinations
 - **Vegana**: Plant-based options
 - **senza-glutine**: Celiac-friendly options
 - **Spicy**: Heat lovers' choices
@@ -98,7 +98,7 @@ Edit `js/data.js` and add items to the `menuItems` array:
     name: "Your Pizza",
     description: "Your description here",
     price: "€X.XX",
-    category: ["Specialità"], // Array of categories
+    category: ["Pizze-d’autore"], // Array of categories
     tags: ["custom"], // Array of tags
     image: "your-image-url"
 }
