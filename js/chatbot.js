@@ -7,11 +7,11 @@ const ChatbotResponses = {
         greeting: {
             message: "Ciao! 👋 Benvenuto da Pizzaingrammi! Sono qui per aiutarti a scegliere la pizza perfetta. Cosa ti va di mangiare oggi?",
             options: [
-                { text: "🍕 Voglio una pizza classica", value: "classic_preference" },
-                { text: "🌟 Qualcosa di gourmet", value: "gourmet_preference" },
-                { text: "🌱 Opzioni vegane", value: "vegan_preference" },
-                { text: "🚫 Senza glutine", value: "gluten_free_preference" },
-                { text: "📋 Mostra tutte le pizze", value: "show_all_pizzas" }
+                { text: "🍕 Pizze classiche", value: "classic_preference" },
+                { text: "🎨 Pizze d'autore", value: "author_preference" },
+                { text: "🌱 Pizze vegane", value: "vegan_preference" },
+                { text: "🚫 Pizze senza glutine", value: "gluten_free_preference" },
+                { text: "📋 Tutte le pizze", value: "show_all_pizzas" }
             ]
         },
         
@@ -20,8 +20,8 @@ const ChatbotResponses = {
             filterBy: "classica"
         },
 
-        gourmet_preference: {
-            message: "Ottima scelta! Le nostre Pizze d'autore sono creative e raffinate. Ecco le nostre creazioni gourmet:",
+        author_preference: {
+            message: "Ottima scelta! Le nostre Pizze d'autore sono creative e raffinate. Ecco le nostre creazioni speciali:",
             filterBy: "Pizze-d'autore"
         },
 
@@ -64,7 +64,7 @@ const ChatbotResponses = {
             message: "Che tipo di pizza preferisci?",
             options: [
                 { text: "🍕 Classiche", value: "classic_preference" },
-                { text: "🌟 Pizze d'autore", value: "gourmet_preference" },
+                { text: "🎨 Pizze d'autore", value: "author_preference" },
                 { text: "🌱 Vegane", value: "vegan_preference" },
                 { text: "🚫 Senza glutine", value: "gluten_free_preference" },
                 { text: "📋 Tutte", value: "show_all_pizzas" }
