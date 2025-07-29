@@ -1,146 +1,4 @@
 /**
-     * Private: Initialize pizza data
-     * @returns {Object[]} Array of pizza objects
-     */
-    _initializePizzaData() {
-        return [
-            this._createPizza({
-                id: 5,
-                name: "Parmigiana",
-                description: "Pomodoro San Marzano DOP, provola di Agerola, parmigiana di melanzane, grattugia di parmigiano reggiano 24 mesi DOP, olio Evo \"Monocultivar Peranzana\", basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
-                tags: [PIZZA_TAGS.PREMIUM, PIZZA_TAGS.HEALTHY],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZyKurSYt4p9lvXYQxfq-feEkyx7SkAdWmokbV46rNgR0OcCPJOCFtYWccZ6ePzmNEqsd0JdyDyB0WPovHf7TQpNh9O7vH7CN45gXrfbLk7NJomEJyx-vrnatvI290dBuaxcaKTIZejiB32HlyhGlGokDgj2vUTtE_YW9mxGCoXBIwu5V3POcAkWitks8CMEAJe1eKYxpU6Otjd2-7C2GuWJL6cFb4CCRhrybn4cepYFWJ-IjQXuN5wC4Duz7KY4r4j6_-0-BDBeD1"
-            }),
-            this._createPizza({
-                id: 6,
-                name: "Regina dell'Orto",
-                description: "Verdure di stagione saltate in padella, fiordilatte di Agerola, olio Evo \"Monocultivar Peranzana\" , basilico",
-                price: "€9.00",
-                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.VEGANA],
-                tags: [PIZZA_TAGS.BESTSELLER, PIZZA_TAGS.HEALTHY],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVPZBgigWCIxTe6k3hP6dA2dvCag9o-hJMha1lI-c1XDnm-rhwv86mIzFI4iB6cJBdjKBVpYL8MSTosbvORwYXO7O9MNgAy5bQFY7STzEiCEChXp0LpI8oj9pLddbTMmEsWq92KWrRe2R-_0-WZsWSsdo-Fp2EZ62VRVZQKSQ-NmiQJB9qp7rDsady6e32xnkOcTwOLpRTQf4XpabGTYt74o5v_WRFSCI_oVXrGcmr-iriIaHAyi5SCIkv30AdNBx9KnrqpCLRD51u"
-            }),
-            this._createPizza({
-                id: 7,
-                name: "Rusticana",
-                description: "Salsiccia di maialino nero di razza Casertana, patate al forno aromatizzate, provola di Agerola, olio Evo, basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
-                tags: [PIZZA_TAGS.HEARTY, PIZZA_TAGS.PROTEIN],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBrdl7yJBmMcPFFAz3L8G9bwEFKYg3GNJdxIAHu4qP8uBe9Qz7GBD0CVg2jXuMQ5gyeylCIHyUtiaxPh0vA4SwFq4ryJjC7muzxECt6O3kj4RqGPzBuDGVMUyEhjyt4it-DpKiazQslD7fJJOKZcynfaXa2Naj9-hY3_MBfIYsqLxmKq6QzAQpYxajU66bRe6cUDVnTBuCkMKLVKBXxwE1rqlhapqiOynX5eqTpbIvdfB7d0ROWt3CxzyWYPPUgXlIeh-AfnP-82m2A"
-            }),
-            this._createPizza({
-                id: 8,
-                name: "Marinara Pizzaingrammi",
-                description: "Crema ai 3 pomodori,capperi di Salina,olive CAIAZZANE denocciolate a mano*, origano di Sicilia, acciughe del mar Cantabrico, pomodorini semi dry, olio Evo, basilico",
-                price: "€11.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.GOURMET, PIZZA_TAGS.TRADITIONAL],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBrdl7yJBmMcPFFAz3L8G9bwEFKYg3GNJdxIAHu4qP8uBe9Qz7GBD0CVg2jXuMQ5gyeylCIHyUtiaxPh0vA4SwFq4ryJjC7muzxECt6O3kj4RqGPzBuDGVMUyEhjyt4it-DpKiazQslD7fJJOKZcynfaXa2Naj9-hY3_MBfIYsqLxmKq6QzAQpYxajU66bRe6cUDVnTBuCkMKLVKBXxwE1rqlhapqiOynX5eqTpbIvdfB7d0ROWt3CxzyWYPPUgXlIeh-AfnP-82m2A"
-            }),
-            this._createPizza({
-                id: 9,
-                name: "Nduja",
-                description: "Pomodoro giallo del Vesuvio, provola di Agerola, salsiccia a punta di coltello, nduja di Spilinga, olio Evo \"Monocultivar Peranzana\", basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
-                tags: [PIZZA_TAGS.HOT, PIZZA_TAGS.PROTEIN],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVPZBgigWCIxTe6k3hP6dA2dvCag9o-hJMha1lI-c1XDnm-rhwv86mIzFI4iB6cJBdjKBVpYL8MSTosbvORwYXO7O9MNgAy5bQFY7STzEiCEChXp0LpI8oj9pLddbTMmEsWq92KWrRe2R-_0-WZsWSsdo-Fp2EZ62VRVZQKSQ-NmiQJB9qp7rDsady6e32xnkOcTwOLpRTQf4XpabGTYt74o5v_WRFSCI_oVXrGcmr-iriIaHAyi5SCIkv30AdNBx9KnrqpCLRD51u"
-            }),
-            this._createPizza({
-                id: 10,
-                name: "Genovese",
-                description: "Cipolle ramate di Montoro, spezzatino di muscolo di scottona, provola di Agerola,spolverata di Parmigiano Reggiano stagionato 18 mesi D.O.P. ,olio Evo,basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.POPULAR, PIZZA_TAGS.PROTEIN],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuATc60KNXWy7ikNsywVHyN45SdOG_82gKfoAp9j4dAemydfjjm0wipAf9tJQg1rL_4IXjP42-NikhG1cel-DCwytypP2Gm87N589eR2n2mCyp0t-J5mkY1f8SuhE6RZtUatoeYBppH5HA26Q82Q3vKUekROJClR85fsbbUFn-QBmYLmmocgFwGcgB90QbtDFQhMw12a1FvDCTH3NM_5jmyASWDhgnvimtkts2R5O31h_GqkBjT4Vx9lZegc5tRjGRLMKy-8eHqDRmY-"
-            }),
-            this._createPizza({
-                id: 11,
-                name: "New Polpetta",
-                description: "Polpettine di manzo al Ragu' Napoletano, provola di Agerola, ciuffi di ricotta di bufala, pepe cuvèe, olio evo \"Monocultivar Peranzana\", basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
-                tags: [PIZZA_TAGS.POPULAR, PIZZA_TAGS.HEARTY],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuATc60KNXWy7ikNsywVHyN45SdOG_82gKfoAp9j4dAemydfjjm0wipAf9tJQg1rL_4IXjP42-NikhG1cel-DCwytypP2Gm87N589eR2n2mCyp0t-J5mkY1f8SuhE6RZtUatoeYBppH5HA26Q82Q3vKUekROJClR85fsbbUFn-QBmYLmmocgFwGcgB90QbtDFQhMw12a1FvDCTH3NM_5jmyASWDhgnvimtkts2R5O31h_GqkBjT4Vx9lZegc5tRjGRLMKy-8eHqDRmY-"
-            }),
-            this._createPizza({
-                id: 12,
-                name: "Cacio e Pepe",
-                description: "Crema di cacio con pepe cuvè,porchetta di Ariccia,fior di latte di Agerola,cipolle rosse essiccate al mosto cotto d'uva,basilico e olio Evo",
-                price: "€12.00",
-                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.TRADITIONAL, PIZZA_TAGS.CHEESE],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-SsdZRBl9wrH-3eLTIXGoTX11EVLNCVYntvp8UdVIgcHvQ38AbdX_Yd0p2FEIAP4Lnl8lzuGXMhX4j4bZAJcTyb24MpAx3t7T1E0oGNxTSiw8Ua_oLUdcOG-UVFzrVwGbks3RcaBT0zKda0Chwe7EjdnyrLfJXjoU41StjFt8BntUEIMUQfKe6nO7FlInC75lQYAoo9eQOSQbDIyL11fZR__isKhEqGIZ9NzwmystCOS1Y7d0KqBAXYNc-XqJRtiv6qw0ZXsuI-s_"
-            }),
-            this._createPizza({
-                id: 13,
-                name: "Crudo di Parma",
-                description: "Fior di latte di Agerola , rucola, prosciutto crudo di Parma, scaglie di parmigiano reggiano 24 mesi, olio Evo",
-                price: "€12.00",
-                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.PREMIUM, PIZZA_TAGS.PROTEIN],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVDi-9_LecMm6SeNNdIIN9KdHUeXn6BRyGQSD4ybb-3_csq5cAoPp60iVeuH86cXLM7Ve9rpRbS0elB2McFXzxPtBOzLJ_I14JKEdt9odyExUlJpzvua_oJ1cvXB7giiGxLUQE6_OUv0b2DJexfJGKaSFkk0MK4B49aEvHG5e3zp-yIPLELdrAbF-aUHkucJX0g_kLyijc3zpLtQkVgTpTslSbomoiqxlzf5Fqx7jFEWXMsnr1OO_SvRtJLcludsmTnime2hqgNtL9"
-            }),
-            this._createPizza({
-                id: 14,
-                name: "Salsiccia e Friarielli",
-                description: "Salsiccia di maiale nero casertano, provola di agerola, friarielli secondo tradizione napoletana",
-                price: "€11.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.TRADITIONAL, PIZZA_TAGS.PROTEIN],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZyKurSYt4p9lvXYQxfq-feEkyx7SkAdWmokbV46rNgR0OcCPJOCFtYWccZ6ePzmNEqsd0JdyDyB0WPovHf7TQpNh9O7vH7CN45gXrfbLk7NJomEJyx-vrnatvI290dBuaxcaKTIZejiB32HlyhGlGokDgj2vUTtE_YW9mxGCoXBIwu5V3POcAkWitks8CMEAJe1eKYxpU6Otjd2-7C2GuWJL6cFb4CCRhrybn4cepYFWJ-IjQXuN5wC4Duz7KY4r4j6_-0-BDBeD1"
-            }),
-            this._createPizza({
-                id: 15,
-                name: "Pistacchio e Mortadella",
-                description: "Crema di pistacchio di Sicilia, fiordilatte di Agerola, mortadella, granella di pistacchio, olio Evo \"Monocultivar Peranzana\" basilico",
-                price: "€11.00",
-                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.BESTSELLER, PIZZA_TAGS.GOURMET],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVPZBgigWCIxTe6k3hP6dA2dvCag9o-hJMha1lI-c1XDnm-rhwv86mIzFI4iB6cJBdjKBVpYL8MSTosbvORwYXO7O9MNgAy5bQFY7STzEiCEChXp0LpI8oj9pLddbTMmEsWq92KWrRe2R-_0-WZsWSsdo-Fp2EZ62VRVZQKSQ-NmiQJB9qp7rDsady6e32xnkOcTwOLpRTQf4XpabGTYt74o5v_WRFSCI_oVXrGcmr-iriIaHAyi5SCIkv30AdNBx9KnrqpCLRD51u"
-            })
-        ];
-    }
-                id: 1,
-                name: "Margherita",
-                description: "Pomodoro San Marzano DOP fiordilatte di Agerola, olio Evo Monocultivar Peranzana basilico",
-                price: "€6.50",
-                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.POPULAR, PIZZA_TAGS.TRADITIONAL],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBYmfVx4LN8rA343zEfsayV1W3o7A1NM5c1gz1T-xIBUc9TzCUM3P9CyNHV6rFCSPcOMyUguuxOe91xD5Ec5gNxW9ytNSeUqdsnjoM1iYbhduVTqIB3zDlMJa4EPo3dRgiR7gVPZP7D2znVYVpWpQ_z2ERkuMyxjAgEjBVuyBLt-7sswBVrGuc3Ld6qGzoIHfgCULimb6xdDBXPEfXdKlcTUrtUj6F8moDKzfcnjXtzSNijuPP3r_Id20eEPTx4NPkZS_R5cUWJ5oYi"
-            }),
-            this._createPizza({
-                id: 2,
-                name: "Calzone",
-                description: "Ricotta di bufala, fordilatte di Agerola. salame Napoli pomodoro San Marzano DOP, olio Evo Monocultivar Peranzana, basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.CLASSICA],
-                tags: [PIZZA_TAGS.TRADITIONAL, PIZZA_TAGS.HEARTY],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-SsdZRBl9wrH-3eLTIXGoTX11EVLNCVYntvp8UdVIgcHvQ38AbdX_Yd0p2FEIAP4Lnl8lzuGXMhX4j4bZAJcTyb24MpAx3t7T1E0oGNxTSiw8Ua_oLUdcOG-UVFzrVwGbks3RcaBT0zKda0Chwe7EjdnyrLfJXjoU41StjFt8BntUEIMUQfKe6nO7FlInC75lQYAoo9eQOSQbDIyL11fZR__isKhEqGIZ9NzwmystCOS1Y7d0KqBAXYNc-XqJRtiv6qw0ZXsuI-s_"
-            }),
-            this._createPizza({
-                id: 3,
-                name: "Regina",
-                description: "Pomodoro Sam Arzano DOP. Mozzarella di bufala Campana, olio Evo Monocultivar Peranzana, basilico",
-                price: "€10.00",
-                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
-                tags: [PIZZA_TAGS.HOT, PIZZA_TAGS.PREMIUM],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVDi-9_LecMm6SeNNdIIN9KdHUeXn6BRyGQSD4ybb-3_csq5cAoPp60iVeuH86cXLM7Ve9rpRbS0elB2McFXzxPtBOzLJ_I14JKEdt9odyExUlJpzvua_oJ1cvXB7giiGxLUQE6_OUv0b2DJexfJGKaSFkk0MK4B49aEvHG5e3zp-yIPLELdrAbF-aUHkucJX0g_kLyijc3zpLtQkVgTpTslSbomoiqxlzf5Fqx7jFEWXMsnr1OO_SvRtJLcludsmTnime2hqgNtL9"
-            }),
-            this._createPizza({
-                id: 4,
-                name: "Capricciosa",
-                description: "Pomodoro San Marzano D.O.P. , fior di latte di Agerola, funghi champignon freschi, prosciutto cotto, salame Napoli, carciofini in olio Evo, olive di Gaeta denocciolate a mano*, olio Evo, basilico",
-                price: "€11.00",
-                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
-                tags: [PIZZA_TAGS.GOURMET, PIZZA_TAGS.CHEESE, PIZZA_TAGS.PROTEIN],
-                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuATc60KNXWy7ikNsywVHyN45SdOG_82gKfoAp9j4dAemydfjjm0wipAf9tJQg1rL_4IXjP42-NikhG1cel-DCwytypP2Gm87N589eR2n2mCyp0t-J5mkY1f8SuhE6RZtUatoeYBppH5HA26Q82Q3vKUekROJClR85fsbbUFn-QBmYLmmocgFwGcgB90QbtDFQhMw12a1FvDCTH3NM_5jmyASWDhgnvimtkts2R5O31h_GqkBjT4Vx9lZegc5tRjGRLMKy-8eHqDRmY-"
-            }),
-            this._createPizza({/**
  * Pizza Repository
  * Manages pizza data with validation and access methods
  */
@@ -332,7 +190,114 @@ export class PizzaRepository {
                 tags: [PIZZA_TAGS.HOT, PIZZA_TAGS.PREMIUM],
                 image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVDi-9_LecMm6SeNNdIIN9KdHUeXn6BRyGQSD4ybb-3_csq5cAoPp60iVeuH86cXLM7Ve9rpRbS0elB2McFXzxPtBOzLJ_I14JKEdt9odyExUlJpzvua_oJ1cvXB7giiGxLUQE6_OUv0b2DJexfJGKaSFkk0MK4B49aEvHG5e3zp-yIPLELdrAbF-aUHkucJX0g_kLyijc3zpLtQkVgTpTslSbomoiqxlzf5Fqx7jFEWXMsnr1OO_SvRtJLcludsmTnime2hqgNtL9"
             }),
-            // Add more pizzas here...
+            this._createPizza({
+                id: 4,
+                name: "Capricciosa",
+                description: "Pomodoro San Marzano D.O.P. , fior di latte di Agerola, funghi champignon freschi, prosciutto cotto, salame Napoli, carciofini in olio Evo, olive di Gaeta denocciolate a mano, olio Evo, basilico",
+                price: "€11.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
+                tags: [PIZZA_TAGS.GOURMET, PIZZA_TAGS.CHEESE, PIZZA_TAGS.PROTEIN],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuATc60KNXWy7ikNsywVHyN45SdOG_82gKfoAp9j4dAemydfjjm0wipAf9tJQg1rL_4IXjP42-NikhG1cel-DCwytypP2Gm87N589eR2n2mCyp0t-J5mkY1f8SuhE6RZtUatoeYBppH5HA26Q82Q3vKUekROJClR85fsbbUFn-QBmYLmmocgFwGcgB90QbtDFQhMw12a1FvDCTH3NM_5jmyASWDhgnvimtkts2R5O31h_GqkBjT4Vx9lZegc5tRjGRLMKy-8eHqDRmY-"
+            }),
+            this._createPizza({
+                id: 5,
+                name: "Parmigiana",
+                description: "Pomodoro San Marzano DOP, provola di Agerola, parmigiana di melanzane, grattugia di parmigiano reggiano 24 mesi DOP, olio Evo Monocultivar Peranzana, basilico",
+                price: "€10.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
+                tags: [PIZZA_TAGS.PREMIUM, PIZZA_TAGS.HEALTHY],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZyKurSYt4p9lvXYQxfq-feEkyx7SkAdWmokbV46rNgR0OcCPJOCFtYWccZ6ePzmNEqsd0JdyDyB0WPovHf7TQpNh9O7vH7CN45gXrfbLk7NJomEJyx-vrnatvI290dBuaxcaKTIZejiB32HlyhGlGokDgj2vUTtE_YW9mxGCoXBIwu5V3POcAkWitks8CMEAJe1eKYxpU6Otjd2-7C2GuWJL6cFb4CCRhrybn4cepYFWJ-IjQXuN5wC4Duz7KY4r4j6_-0-BDBeD1"
+            }),
+            this._createPizza({
+                id: 6,
+                name: "Regina dell'Orto",
+                description: "Verdure di stagione saltate in padella, fiordilatte di Agerola, olio Evo Monocultivar Peranzana, basilico",
+                price: "€9.00",
+                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.VEGANA],
+                tags: [PIZZA_TAGS.BESTSELLER, PIZZA_TAGS.HEALTHY],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVPZBgigWCIxTe6k3hP6dA2dvCag9o-hJMha1lI-c1XDnm-rhwv86mIzFI4iB6cJBdjKBVpYL8MSTosbvORwYXO7O9MNgAy5bQFY7STzEiCEChXp0LpI8oj9pLddbTMmEsWq92KWrRe2R-_0-WZsWSsdo-Fp2EZ62VRVZQKSQ-NmiQJB9qp7rDsady6e32xnkOcTwOLpRTQf4XpabGTYt74o5v_WRFSCI_oVXrGcmr-iriIaHAyi5SCIkv30AdNBx9KnrqpCLRD51u"
+            }),
+            this._createPizza({
+                id: 7,
+                name: "Rusticana",
+                description: "Salsiccia di maialino nero di razza Casertana, patate al forno aromatizzate, provola di Agerola, olio Evo, basilico",
+                price: "€10.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
+                tags: [PIZZA_TAGS.HEARTY, PIZZA_TAGS.PROTEIN],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBrdl7yJBmMcPFFAz3L8G9bwEFKYg3GNJdxIAHu4qP8uBe9Qz7GBD0CVg2jXuMQ5gyeylCIHyUtiaxPh0vA4SwFq4ryJjC7muzxECt6O3kj4RqGPzBuDGVMUyEhjyt4it-DpKiazQslD7fJJOKZcynfaXa2Naj9-hY3_MBfIYsqLxmKq6QzAQpYxajU66bRe6cUDVnTBuCkMKLVKBXxwE1rqlhapqiOynX5eqTpbIvdfB7d0ROWt3CxzyWYPPUgXlIeh-AfnP-82m2A"
+            }),
+            this._createPizza({
+                id: 8,
+                name: "Marinara Pizzaingrammi",
+                description: "Crema ai 3 pomodori, capperi di Salina, olive CAIAZZANE denocciolate a mano, origano di Sicilia, acciughe del mar Cantabrico, pomodorini semi dry, olio Evo, basilico",
+                price: "€11.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE, PIZZA_CATEGORIES.SENZA_GLUTINE],
+                tags: [PIZZA_TAGS.GOURMET, PIZZA_TAGS.TRADITIONAL],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBrdl7yJBmMcPFFAz3L8G9bwEFKYg3GNJdxIAHu4qP8uBe9Qz7GBD0CVg2jXuMQ5gyeylCIHyUtiaxPh0vA4SwFq4ryJjC7muzxECt6O3kj4RqGPzBuDGVMUyEhjyt4it-DpKiazQslD7fJJOKZcynfaXa2Naj9-hY3_MBfIYsqLxmKq6QzAQpYxajU66bRe6cUDVnTBuCkMKLVKBXxwE1rqlhapqiOynX5eqTpbIvdfB7d0ROWt3CxzyWYPPUgXlIeh-AfnP-82m2A"
+            }),
+            this._createPizza({
+                id: 9,
+                name: "Nduja",
+                description: "Pomodoro giallo del Vesuvio, provola di Agerola, salsiccia a punta di coltello, nduja di Spilinga, olio Evo Monocultivar Peranzana, basilico",
+                price: "€10.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
+                tags: [PIZZA_TAGS.HOT, PIZZA_TAGS.PROTEIN],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVPZBgigWCIxTe6k3hP6dA2dvCag9o-hJMha1lI-c1XDnm-rhwv86mIzFI4iB6cJBdjKBVpYL8MSTosbvORwYXO7O9MNgAy5bQFY7STzEiCEChXp0LpI8oj9pLddbTMmEsWq92KWrRe2R-_0-WZsWSsdo-Fp2EZ62VRVZQKSQ-NmiQJB9qp7rDsady6e32xnkOcTwOLpRTQf4XpabGTYt74o5v_WRFSCI_oVXrGcmr-iriIaHAyi5SCIkv30AdNBx9KnrqpCLRD51u"
+            }),
+            this._createPizza({
+                id: 10,
+                name: "Genovese",
+                description: "Cipolle ramate di Montoro, spezzatino di muscolo di scottona, provola di Agerola, spolverata di Parmigiano Reggiano stagionato 18 mesi D.O.P., olio Evo, basilico",
+                price: "€10.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE, PIZZA_CATEGORIES.SENZA_GLUTINE],
+                tags: [PIZZA_TAGS.POPULAR, PIZZA_TAGS.PROTEIN],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuATc60KNXWy7ikNsywVHyN45SdOG_82gKfoAp9j4dAemydfjjm0wipAf9tJQg1rL_4IXjP42-NikhG1cel-DCwytypP2Gm87N589eR2n2mCyp0t-J5mkY1f8SuhE6RZtUatoeYBppH5HA26Q82Q3vKUekROJClR85fsbbUFn-QBmYLmmocgFwGcgB90QbtDFQhMw12a1FvDCTH3NM_5jmyASWDhgnvimtkts2R5O31h_GqkBjT4Vx9lZegc5tRjGRLMKy-8eHqDRmY-"
+            }),
+            this._createPizza({
+                id: 11,
+                name: "New Polpetta",
+                description: "Polpettine di manzo al Ragu Napoletano, provola di Agerola, ciuffi di ricotta di bufala, pepe cuvèe, olio evo Monocultivar Peranzana, basilico",
+                price: "€10.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE],
+                tags: [PIZZA_TAGS.POPULAR, PIZZA_TAGS.HEARTY],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuATc60KNXWy7ikNsywVHyN45SdOG_82gKfoAp9j4dAemydfjjm0wipAf9tJQg1rL_4IXjP42-NikhG1cel-DCwytypP2Gm87N589eR2n2mCyp0t-J5mkY1f8SuhE6RZtUatoeYBppH5HA26Q82Q3vKUekROJClR85fsbbUFn-QBmYLmmocgFwGcgB90QbtDFQhMw12a1FvDCTH3NM_5jmyASWDhgnvimtkts2R5O31h_GqkBjT4Vx9lZegc5tRjGRLMKy-8eHqDRmY-"
+            }),
+            this._createPizza({
+                id: 12,
+                name: "Cacio e Pepe",
+                description: "Crema di cacio con pepe cuvè, porchetta di Ariccia, fior di latte di Agerola, cipolle rosse essiccate al mosto cotto d'uva, basilico e olio Evo",
+                price: "€12.00",
+                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
+                tags: [PIZZA_TAGS.TRADITIONAL, PIZZA_TAGS.CHEESE],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD-SsdZRBl9wrH-3eLTIXGoTX11EVLNCVYntvp8UdVIgcHvQ38AbdX_Yd0p2FEIAP4Lnl8lzuGXMhX4j4bZAJcTyb24MpAx3t7T1E0oGNxTSiw8Ua_oLUdcOG-UVFzrVwGbks3RcaBT0zKda0Chwe7EjdnyrLfJXjoU41StjFt8BntUEIMUQfKe6nO7FlInC75lQYAoo9eQOSQbDIyL11fZR__isKhEqGIZ9NzwmystCOS1Y7d0KqBAXYNc-XqJRtiv6qw0ZXsuI-s_"
+            }),
+            this._createPizza({
+                id: 13,
+                name: "Crudo di Parma",
+                description: "Fior di latte di Agerola, rucola, prosciutto crudo di Parma, scaglie di parmigiano reggiano 24 mesi, olio Evo",
+                price: "€12.00",
+                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
+                tags: [PIZZA_TAGS.PREMIUM, PIZZA_TAGS.PROTEIN],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVDi-9_LecMm6SeNNdIIN9KdHUeXn6BRyGQSD4ybb-3_csq5cAoPp60iVeuH86cXLM7Ve9rpRbS0elB2McFXzxPtBOzLJ_I14JKEdt9odyExUlJpzvua_oJ1cvXB7giiGxLUQE6_OUv0b2DJexfJGKaSFkk0MK4B49aEvHG5e3zp-yIPLELdrAbF-aUHkucJX0g_kLyijc3zpLtQkVgTpTslSbomoiqxlzf5Fqx7jFEWXMsnr1OO_SvRtJLcludsmTnime2hqgNtL9"
+            }),
+            this._createPizza({
+                id: 14,
+                name: "Salsiccia e Friarielli",
+                description: "Salsiccia di maiale nero casertano, provola di agerola, friarielli secondo tradizione napoletana",
+                price: "€11.00",
+                category: [PIZZA_CATEGORIES.PIZZE_AUTORE, PIZZA_CATEGORIES.SENZA_GLUTINE],
+                tags: [PIZZA_TAGS.TRADITIONAL, PIZZA_TAGS.PROTEIN],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZyKurSYt4p9lvXYQxfq-feEkyx7SkAdWmokbV46rNgR0OcCPJOCFtYWccZ6ePzmNEqsd0JdyDyB0WPovHf7TQpNh9O7vH7CN45gXrfbLk7NJomEJyx-vrnatvI290dBuaxcaKTIZejiB32HlyhGlGokDgj2vUTtE_YW9mxGCoXBIwu5V3POcAkWitks8CMEAJe1eKYxpU6Otjd2-7C2GuWJL6cFb4CCRhrybn4cepYFWJ-IjQXuN5wC4Duz7KY4r4j6_-0-BDBeD1"
+            }),
+            this._createPizza({
+                id: 15,
+                name: "Pistacchio e Mortadella",
+                description: "Crema di pistacchio di Sicilia, fiordilatte di Agerola, mortadella, granella di pistacchio, olio Evo Monocultivar Peranzana, basilico",
+                price: "€11.00",
+                category: [PIZZA_CATEGORIES.CLASSICA, PIZZA_CATEGORIES.SENZA_GLUTINE],
+                tags: [PIZZA_TAGS.BESTSELLER, PIZZA_TAGS.GOURMET],
+                image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVPZBgigWCIxTe6k3hP6dA2dvCag9o-hJMha1lI-c1XDnm-rhwv86mIzFI4iB6cJBdjKBVpYL8MSTosbvORwYXO7O9MNgAy5bQFY7STzEiCEChXp0LpI8oj9pLddbTMmEsWq92KWrRe2R-_0-WZsWSsdo-Fp2EZ62VRVZQKSQ-NmiQJB9qp7rDsady6e32xnkOcTwOLpRTQf4XpabGTYt74o5v_WRFSCI_oVXrGcmr-iriIaHAyi5SCIkv30AdNBx9KnrqpCLRD51u"
+            })
         ];
     }
 
