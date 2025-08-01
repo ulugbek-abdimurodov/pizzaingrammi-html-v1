@@ -81,13 +81,25 @@ const FilterManager = {
             }
         });
 
-        // For now, we're only handling pizzas
-        if (categoryId === 'pizzas') {
-            this.applyFilters();
+        // Switch database and re-render components
+        if (dbManager.setCategory(categoryId)) {
+            this.reloadCategoryContent();
         } else {
-            // Show empty state or different content for other categories
             this.showEmptyState(categoryId);
         }
+    },
+
+    reloadCategoryContent() {
+        // Re-render filter section with new database
+        const filterElement = document.getElementById('filter-section');
+        if (filterElement) {
+            filterElement.innerHTML = Components.createFilterSection();
+        }
+
+        // Reset filters and apply
+        this.activeFilters = ['all'];
+        this.updateFilterUI();
+        this.applyFilters();
     },
 
     showEmptyState(categoryId) {
@@ -105,7 +117,7 @@ const FilterManager = {
     },
 
     applyFilters() {
-        const filteredItems = PizzaData.getFilteredItems(this.activeFilters);
+        const filteredItems = dbManager.getFilteredItems(this.activeFilters);
         this.animateFilterChange(filteredItems);
         this.updateResultsCount(filteredItems.length);
     },

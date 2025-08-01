@@ -54,6 +54,12 @@ class PizzaApp {
             filterElement.innerHTML = Components.createFilterSection();
         }
 
+        // Render footer
+        const footerElement = document.getElementById('footer');
+        if (footerElement) {
+            footerElement.innerHTML = Components.createFooter();
+        }
+
         // Render initial menu items
         Components.renderMenuItems();
     }
@@ -98,75 +104,102 @@ class PizzaApp {
 
     handleResize() {
         // Adjust layout for different screen sizes
-        const filterContainer = document.querySelector('.filter-container');
-        if (!filterContainer) return;
-
-        if (window.innerWidth < 640) {
-            // Mobile adjustments
-            filterContainer.classList.add('justify-center');
-        } else {
-            // Desktop adjustments
-            filterContainer.classList.remove('justify-center');
+        const isMobile = window.innerWidth < 768;
+        const appContainer = document.querySelector('.app-container');
+        
+        if (appContainer) {
+            if (isMobile) {
+                appContainer.classList.add('mobile-layout');
+            } else {
+                appContainer.classList.remove('mobile-layout');
+            }
         }
     }
 
     handleKeyboardShortcuts(e) {
-        // Reset filters (Ctrl/Cmd + R)
-        if ((e.ctrlKey || e.metaKey) && e.key === 'r' && !e.shiftKey) {
+        // Reset filters with Ctrl/Cmd + R
+        if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
             e.preventDefault();
             FilterManager.reset();
-            this.showNotification('Filters reset!', 'info');
+            this.showNotification('Filters reset successfully!', 'success');
         }
     }
 
     showNotification(message, type = 'info') {
-        // Remove existing notifications
-        const existingNotifications = document.querySelectorAll('.app-notification');
-        existingNotifications.forEach(notification => notification.remove());
-
         // Create notification element
         const notification = document.createElement('div');
-        notification.className = `app-notification fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-x-full`;
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
         
-        // Set colors based on type
+        // Set notification styles based on type
         switch(type) {
             case 'success':
-                notification.classList.add('bg-green-600', 'text-white');
+                notification.className += ' bg-green-500 text-white';
                 break;
             case 'error':
-                notification.classList.add('bg-red-600', 'text-white');
+                notification.className += ' bg-red-500 text-white';
                 break;
             case 'warning':
-                notification.classList.add('bg-yellow-600', 'text-white');
+                notification.className += ' bg-yellow-500 text-black';
                 break;
             default:
-                notification.classList.add('bg-blue-600', 'text-white');
+                notification.className += ' bg-blue-500 text-white';
         }
-
+        
         notification.textContent = message;
+        
+        // Add to DOM
         document.body.appendChild(notification);
-
+        
         // Animate in
-        requestAnimationFrame(() => {
-            notification.classList.remove('translate-x-full');
-            notification.classList.add('translate-x-0');
-        });
-
-        // Auto remove after 3 seconds
         setTimeout(() => {
-            notification.classList.remove('translate-x-0');
+            notification.classList.remove('translate-x-full');
+        }, 100);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
             notification.classList.add('translate-x-full');
-            
             setTimeout(() => {
                 if (notification.parentNode) {
-                    notification.remove();
+                    notification.parentNode.removeChild(notification);
                 }
             }, 300);
         }, 3000);
     }
 
-    // Public API methods
+    // Category switching method
+    switchCategory(categoryId) {
+        // Update active category in menu navigation
+        const categoryLinks = document.querySelectorAll('[data-category]');
+        categoryLinks.forEach(link => {
+            const category = link.dataset.category;
+            if (category === categoryId) {
+                link.classList.remove('border-b-transparent', 'text-[#cbc190]');
+                link.classList.add('border-b-[#eec80b]', 'text-white');
+            } else {
+                link.classList.remove('border-b-[#eec80b]', 'text-white');
+                link.classList.add('border-b-transparent', 'text-[#cbc190]');
+            }
+        });
+
+        // Update database and re-render
+        if (dbManager.setCategory(categoryId)) {
+            // Re-render filter section with new database
+            const filterElement = document.getElementById('filter-section');
+            if (filterElement) {
+                filterElement.innerHTML = Components.createFilterSection();
+            }
+
+            // Re-render menu items
+            Components.renderMenuItems();
+            
+            // Reset filters
+            FilterManager.reset();
+        }
+    }
+
+    // Filter by category method
     filterByCategory(category) {
+        // This method can be called from external components
         FilterManager.toggleFilter(category);
     }
 }
