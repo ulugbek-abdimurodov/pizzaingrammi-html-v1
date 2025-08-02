@@ -1,4 +1,4 @@
-// Complete Working Chatbot for Pizzaingrammi - UPDATED VERSION
+// Complete Working Chatbot for Pizzaingrammi - FIXED VERSION
 // assets/js/modules/chatbot.js
 
 // Chatbot Responses
@@ -120,14 +120,17 @@ const ChatbotLogic = {
 
     showFilteredPizzas(filterBy, chatbot) {
         // Switch to pizza database
-        dbManager.setCategory('pizzas');
+        if (typeof dbManager !== 'undefined') {
+            dbManager.setCategory('pizzas');
+        }
         
         let filteredPizzas = [];
         
         if (filterBy === "all") {
-            filteredPizzas = dbManager.getMenuItems();
+            filteredPizzas = typeof dbManager !== 'undefined' ? dbManager.getMenuItems() : PizzaDatabase.menuItems;
         } else {
-            filteredPizzas = dbManager.getMenuItems().filter(pizza => 
+            const menuItems = typeof dbManager !== 'undefined' ? dbManager.getMenuItems() : PizzaDatabase.menuItems;
+            filteredPizzas = menuItems.filter(pizza => 
                 pizza.category.includes(filterBy)
             );
         }
@@ -248,34 +251,81 @@ const ChatbotLogic = {
                 break;
         }
         
-        if (dbCategory && dbManager.setCategory(dbCategory)) {
+        if (dbCategory && typeof dbManager !== 'undefined' && dbManager.setCategory(dbCategory)) {
             const items = dbManager.getMenuItems();
             
-            chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
-            
-            items.forEach((item, index) => {
+            if (items && items.length > 0) {
+                chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
+                
+                items.forEach((item, index) => {
+                    setTimeout(() => {
+                        const cardElement = chatbot.showPizzaCard(item);
+                        if (cardElement) {
+                            cardElement.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                this.selectItem(item, chatbot);
+                            });
+                        }
+                    }, index * 200);
+                });
+                
                 setTimeout(() => {
-                    const cardElement = chatbot.showPizzaCard(item);
-                    if (cardElement) {
-                        cardElement.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            this.selectItem(item, chatbot);
-                        });
-                    }
-                }, index * 200);
-            });
-            
-            setTimeout(() => {
-                const finalOptions = ChatbotResponses.getFinalOptions();
-                chatbot.showOptions(finalOptions.options);
-            }, items.length * 200 + 500);
+                    const finalOptions = ChatbotResponses.getFinalOptions();
+                    chatbot.showOptions(finalOptions.options);
+                }, items.length * 200 + 500);
+            } else {
+                chatbot.showMessage(`Al momento non abbiamo ${displayName} disponibili. 😔`, 'bot');
+                setTimeout(() => {
+                    const finalOptions = ChatbotResponses.getFinalOptions();
+                    chatbot.showOptions(finalOptions.options);
+                }, 2000);
+            }
         } else {
-            chatbot.showMessage(`Al momento stiamo preparando il menu delle ${displayName}. Torneremo presto! 🔜`, 'bot');
-            setTimeout(() => {
-                const finalOptions = ChatbotResponses.getFinalOptions();
-                chatbot.showOptions(finalOptions.options);
-            }, 2000);
+            // Fallback - try to use individual database objects
+            let database = null;
+            switch(categoryName) {
+                case 'frittatine':
+                    database = typeof FrittatinaDatabase !== 'undefined' ? FrittatinaDatabase : null;
+                    displayName = 'Frittatine';
+                    break;
+                case 'bevande':
+                    database = typeof BeverageDatabase !== 'undefined' ? BeverageDatabase : null;
+                    displayName = 'Bevande';
+                    break;
+                case 'desserts':
+                    database = typeof DessertDatabase !== 'undefined' ? DessertDatabase : null;
+                    displayName = 'Dessert';
+                    break;
+            }
+            
+            if (database && database.menuItems && database.menuItems.length > 0) {
+                chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
+                
+                database.menuItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        const cardElement = chatbot.showPizzaCard(item);
+                        if (cardElement) {
+                            cardElement.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                this.selectItem(item, chatbot);
+                            });
+                        }
+                    }, index * 200);
+                });
+                
+                setTimeout(() => {
+                    const finalOptions = ChatbotResponses.getFinalOptions();
+                    chatbot.showOptions(finalOptions.options);
+                }, database.menuItems.length * 200 + 500);
+            } else {
+                chatbot.showMessage(`Al momento stiamo preparando il menu delle ${displayName}. Torneremo presto! 🔜`, 'bot');
+                setTimeout(() => {
+                    const finalOptions = ChatbotResponses.getFinalOptions();
+                    chatbot.showOptions(finalOptions.options);
+                }, 2000);
+            }
         }
     },
 
@@ -306,6 +356,7 @@ const ChatbotLogic = {
 class PizzaChatbot {
     constructor() {
         this.isOpen = false;
+        this.isInitialized = false;
         this.userPreferences = {
             dietary: null,
             category: null,
@@ -315,45 +366,57 @@ class PizzaChatbot {
     }
 
     init() {
+        // Prevent double initialization
+        if (this.isInitialized) {
+            console.log('Chatbot already initialized');
+            return;
+        }
+
         this.createChatbotUI();
         this.bindEvents();
+        this.isInitialized = true;
         console.log('Pizzaingrammi Chatbot initialized successfully!');
     }
 
     createChatbotUI() {
-        // Add styles
-        const styles = `
-            <style id="chatbot-styles">
-                @keyframes fade-in {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                
-                .animate-fade-in { animation: fade-in 0.3s ease-out; }
-                
-                .line-clamp-2 {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
-                
-                #chatbot-messages::-webkit-scrollbar { width: 4px; }
-                #chatbot-messages::-webkit-scrollbar-track { background: transparent; }
-                #chatbot-messages::-webkit-scrollbar-thumb { background-color: #494222; border-radius: 2px; }
+        // Check if chatbot UI already exists
+        if (document.getElementById('chatbot-button')) {
+            console.log('Chatbot UI already exists');
+            return;
+        }
 
-                .pizza-recommendation {
-                    transition: all 0.2s ease;
-                }
-
-                .pizza-recommendation:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 12px rgba(238, 200, 11, 0.3);
-                }
-            </style>
-        `;
-        
+        // Add styles only once
         if (!document.getElementById('chatbot-styles')) {
+            const styles = `
+                <style id="chatbot-styles">
+                    @keyframes fade-in {
+                        from { opacity: 0; transform: translateY(10px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+                    
+                    .animate-fade-in { animation: fade-in 0.3s ease-out; }
+                    
+                    .line-clamp-2 {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                    }
+                    
+                    #chatbot-messages::-webkit-scrollbar { width: 4px; }
+                    #chatbot-messages::-webkit-scrollbar-track { background: transparent; }
+                    #chatbot-messages::-webkit-scrollbar-thumb { background-color: #494222; border-radius: 2px; }
+
+                    .pizza-recommendation {
+                        transition: all 0.2s ease;
+                    }
+
+                    .pizza-recommendation:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(238, 200, 11, 0.3);
+                    }
+                </style>
+            `;
             document.head.insertAdjacentHTML('beforeend', styles);
         }
 
@@ -403,7 +466,11 @@ class PizzaChatbot {
         const closeBtn = document.getElementById('chatbot-close');
 
         if (button) {
-            button.addEventListener('click', (e) => {
+            // Remove any existing event listeners first
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 this.openChatbot();
@@ -418,13 +485,17 @@ class PizzaChatbot {
             });
         }
 
-        // Close chatbot when clicking outside
-        document.addEventListener('click', (e) => {
-            const container = document.getElementById('chatbot-container');
-            if (this.isOpen && container && !container.contains(e.target) && !button?.contains(e.target)) {
-                this.closeChatbot();
-            }
-        });
+        // Close chatbot when clicking outside (only bind once)
+        if (!this.outsideClickBound) {
+            document.addEventListener('click', (e) => {
+                const container = document.getElementById('chatbot-container');
+                const button = document.getElementById('chatbot-button');
+                if (this.isOpen && container && !container.contains(e.target) && !button?.contains(e.target)) {
+                    this.closeChatbot();
+                }
+            });
+            this.outsideClickBound = true;
+        }
     }
 
     openChatbot() {
@@ -444,7 +515,9 @@ class PizzaChatbot {
 
         // Start conversation if it's the first time
         if (this.conversationHistory.length === 0) {
-            this.startConversation();
+            setTimeout(() => {
+                this.startConversation();
+            }, 500);
         }
     }
 
@@ -467,10 +540,15 @@ class PizzaChatbot {
     startConversation() {
         // Clear any existing messages first
         this.clearMessages();
+        this.conversationHistory = [];
         
-        const greeting = ChatbotResponses.getGreeting();
-        this.showMessage(greeting.message, 'bot');
-        this.showOptions(greeting.options);
+        setTimeout(() => {
+            const greeting = ChatbotResponses.getGreeting();
+            this.showMessage(greeting.message, 'bot');
+            setTimeout(() => {
+                this.showOptions(greeting.options);
+            }, 1000);
+        }, 300);
     }
 
     showMessage(message, sender = 'bot', delay = 0) {
@@ -486,7 +564,7 @@ class PizzaChatbot {
                     <div class="w-8 h-8 bg-[#eec80b] rounded-full flex items-center justify-center text-[#232010] text-sm font-bold flex-shrink-0">
                         🍕
                     </div>
-                    <div class="bg-[#494222] text-white p-3 rounded-lg max-w-64 text-sm leading-relaxed">
+                    <div class="bg-[#494422] text-white p-3 rounded-lg max-w-64 text-sm leading-relaxed">
                         ${message}
                     </div>
                 `;
@@ -510,15 +588,18 @@ class PizzaChatbot {
         const optionsContainer = document.getElementById('chatbot-options');
         if (!optionsContainer) return;
 
+        // Clear existing options
         optionsContainer.innerHTML = '';
         
         options.forEach((option, index) => {
             setTimeout(() => {
                 const button = document.createElement('button');
-                button.className = 'w-full text-left p-2 mb-1 bg-[#494222] hover:bg-[#5a4d2a] text-white rounded-lg transition-all duration-200 text-xs transform hover:scale-[1.02] last:mb-0 break-words';
+                button.className = 'w-full text-left p-2 mb-1 bg-[#494422] hover:bg-[#5a4d2a] text-white rounded-lg transition-all duration-200 text-xs transform hover:scale-[1.02] last:mb-0 break-words';
                 button.textContent = option.text;
                 button.style.wordWrap = 'break-word';
                 button.style.whiteSpace = 'normal';
+                
+                // Create a new event listener for each button
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -531,9 +612,13 @@ class PizzaChatbot {
     }
 
     handleOptionClick(option) {
-        this.showMessage(option.text, 'user');
+        // Clear options immediately to prevent double clicks
         this.clearOptions();
         
+        // Show user message
+        this.showMessage(option.text, 'user');
+        
+        // Process choice after a short delay
         setTimeout(() => {
             ChatbotLogic.processUserChoice(option.value, this);
         }, 500);
@@ -554,7 +639,8 @@ class PizzaChatbot {
         cardElement.className = 'animate-fade-in';
         
         const badgesHTML = pizza.category.map(cat => {
-            const badgeClass = PizzaData.getBadgeClass ? PizzaData.getBadgeClass(cat) : 'bg-gray-600 text-white';
+            const badgeClass = typeof PizzaDatabase !== 'undefined' && PizzaDatabase.getBadgeClass ? 
+                PizzaDatabase.getBadgeClass(cat) : 'bg-gray-600 text-white';
             return `<span class="text-xs px-2 py-1 rounded-full ${badgeClass}">${cat}</span>`;
         }).join('');
         
@@ -589,8 +675,6 @@ class PizzaChatbot {
             selectedPizza: null
         };
         
-        this.clearMessages();
-        this.conversationHistory = [];
         this.startConversation();
     }
 
@@ -602,27 +686,63 @@ class PizzaChatbot {
     }
 }
 
-// Initialize chatbot when DOM is ready
-let chatbotInitialized = false;
+// Global chatbot instance
+let globalChatbot = null;
 
-function initializeChatbot() {
-    // Prevent double initialization
-    if (chatbotInitialized) {
-        return;
+// Check if user is visiting for the first time
+function isFirstTimeVisitor() {
+    const hasVisited = localStorage.getItem('pizzaingrammi_visited');
+    if (!hasVisited) {
+        localStorage.setItem('pizzaingrammi_visited', 'true');
+        return true;
     }
-    
-    const chatbot = new PizzaChatbot();
-    chatbot.init();
-    
-    // Auto-open chatbot after a short delay
-    setTimeout(() => {
-        chatbot.openChatbot();
-        chatbot.startConversation();
-    }, 1500); // 1.5 second delay to let the page load first
-    
-    chatbotInitialized = true;
-    console.log('Pizzaingrammi Chatbot initialized successfully!');
+    return false;
 }
 
-// Initialize only when DOM is ready
-document.addEventListener('DOMContentLoaded', initializeChatbot);
+// Check if page was refreshed or newly loaded
+function shouldShowChatbot() {
+    // Always show chatbot on page load (first visit or refresh)
+    return true;
+}
+
+// Initialize chatbot when DOM is ready
+function initializeChatbot() {
+    // Prevent double initialization
+    if (globalChatbot && globalChatbot.isInitialized) {
+        console.log('Chatbot already initialized, skipping...');
+        return globalChatbot;
+    }
+    
+    try {
+        globalChatbot = new PizzaChatbot();
+        globalChatbot.init();
+        
+        // Auto-open chatbot on every page load (first visit or refresh)
+        if (shouldShowChatbot()) {
+            setTimeout(() => {
+                globalChatbot.openChatbot();
+            }, 2000); // Open after 2 seconds to let page load
+        }
+        
+        // Mark as visited for tracking purposes (optional)
+        isFirstTimeVisitor();
+        
+        // Make chatbot globally available
+        window.PizzaChatbot = globalChatbot;
+        
+        console.log('Pizzaingrammi Chatbot initialized successfully!');
+        return globalChatbot;
+    } catch (error) {
+        console.error('Error initializing chatbot:', error);
+        return null;
+    }
+}
+
+// Auto-initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initializeChatbot, 1000);
+    });
+} else {
+    setTimeout(initializeChatbot, 1000);
+}
