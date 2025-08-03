@@ -3,64 +3,55 @@ const DessertDatabase = {
     menuItems: [
         {
             id: 1,
-            name: "Tiramisù",
-            description: "Tiramisù classico con mascarpone, savoiardi e caffè",
+            name: "Tiramisù Classico",
+            description: "Un classico italiano servito in eleganti monoporzioni: morbidi strati di savoiardi inzuppati nel caffè, alternati a una vellutata crema al mascarpone",
             price: "€6.00",
             category: ["classici"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/desserts/tiramisu.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 2,
-            name: "Panna Cotta",
-            description: "Panna cotta con vaniglia e salsa ai frutti di bosco",
-            price: "€5.50",
+            name: "Tiramisù al Caramello Salato",
+            description: "Crema vellutata, caramello salato, cacao amaro e biscotto al caffè: un’esplosione di dolcezza cremosa",
+            price: "€6.00",
             category: ["classici"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/desserts/tiramisu-caramello.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 3,
-            name: "Cannolo Siciliano",
-            description: "Cannolo siciliano con ricotta fresca e gocce di cioccolato",
-            price: "€4.50",
+            name: "Tiramisù al Limone",
+            description: "Fresco e leggero, con crema al limone, panna montata e scaglie di cioccolato bianco: un dolce estivo irresistibile",
+            price: "€6.00",
             category: ["classici"],
-            tags: ["traditional"],
-            image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center"
+            tags: ["popular"],
+            image: "./assets/images/desserts/tiramisu-limone.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 4,
-            name: "Gelato Artigianale",
-            description: "Gelato artigianale alla vaniglia, cioccolato o fragola",
-            price: "€3.50",
-            category: ["gelati"],
+            name: "Crostatina",
+            description: "Crostatina con frutta fresca e gelato",
+            price: "€6.00",
+            category: ["classici"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/desserts/crostatina.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 5,
-            name: "Profiteroles",
-            description: "Profiteroles con crema chantilly e salsa al cioccolato",
-            price: "€6.50",
-            category: ["classici"],
-            tags: ["premium"],
-            image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&crop=center"
-        },
-        {
-            id: 6,
-            name: "Sorbetto al Limone",
-            description: "Sorbetto al limone di Sorrento",
-            price: "€3.00",
-            category: ["gelati"],
-            tags: ["refreshing"],
-            image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop&crop=center"
+            name: "Baba\' Pizzaingrammi",
+            description: "Anche gluten free: solo sedi di Pomigliano",
+            price: "€7.00",
+            category: ["classici", "gluten-free"],
+            tags: ["popular"],
+            image: "./assets/images/desserts/baba-pizzaingrammi.jpg?w=400&h=300&fit=crop&crop=center"            
         }
     ],
 
     filterOptions: [
         { id: 'all', label: 'Tutti', active: true },
         { id: 'classici', label: 'Classici', active: false },
-        { id: 'gelati', label: 'Gelati', active: false }
+        { id: 'gluten-free', label: 'Gluten-free', active: false }
     ],
 
     getFilteredItems(activeFilters) {
@@ -78,7 +69,7 @@ const DessertDatabase = {
     getBadgeClass(category) {
         const badgeClasses = {
             'classici': 'badge-classici',
-            'gelati': 'badge-gelati'
+            'gluten-free': 'badge-gluten-free'
         };
         return badgeClasses[category] || 'badge-classici';
     }
