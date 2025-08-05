@@ -9,7 +9,7 @@ const ChatbotResponses = {
             options: [
                 { text: "🍕 Pizze classiche", value: "classic_preference" },
                 { text: "🎨 Pizze d'autore", value: "author_preference" },
-                { text: "🌱 Pizze vegane", value: "vegan_preference" },
+                { text: "🌱 Pizze vegetariane", value: "vegetarian_preference" },
                 { text: "🚫 Pizze senza glutine", value: "gluten_free_preference" },
                 { text: "📋 Tutte le pizze", value: "show_all_pizzas" }
             ]
@@ -25,9 +25,9 @@ const ChatbotResponses = {
             filterBy: "Pizze-d'autore"
         },
 
-        vegan_preference: {
-            message: "Fantastico! Ecco le nostre opzioni vegane deliziose:",
-            filterBy: "Vegana"
+        vegetarian_preference: {
+            message: "Fantastico! Ecco le nostre opzioni vegetariane deliziose:",
+            filterBy: "Vegetariana"
         },
 
         gluten_free_preference: {
@@ -65,7 +65,7 @@ const ChatbotResponses = {
             options: [
                 { text: "🍕 Classiche", value: "classic_preference" },
                 { text: "🎨 Pizze d'autore", value: "author_preference" },
-                { text: "🌱 Vegane", value: "vegan_preference" },
+                { text: "🌱 Vegetariane", value: "vegetarian_preference" },
                 { text: "🚫 Senza glutine", value: "gluten_free_preference" },
                 { text: "📋 Tutte", value: "show_all_pizzas" }
             ]

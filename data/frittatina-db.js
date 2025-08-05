@@ -60,7 +60,8 @@ const FrittatinaDatabase = {
     filterOptions: [
         { id: 'all', label: 'Tutti', active: true },
         { id: 'classica', label: 'Classica', active: false },
-        { id: 'vegetariana', label: 'Vegetariana', active: false }
+        { id: 'vegetariana', label: 'Vegetariana', active: false },
+        { id: 'senza-glutine', label: 'Senza Glutine', active: false }
     ],
 
     getFilteredItems(activeFilters) {
@@ -78,7 +79,8 @@ const FrittatinaDatabase = {
     getBadgeClass(category) {
         const badgeClasses = {
             'classica': 'badge-classica',
-            'vegetariana': 'badge-vegetariana'
+            'vegetariana': 'badge-Vegetariana',
+            'senza-glutine': 'badge-senza-glutine'
         };
         return badgeClasses[category] || 'badge-classica';
     }

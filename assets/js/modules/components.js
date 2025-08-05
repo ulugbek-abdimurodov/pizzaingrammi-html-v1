@@ -39,7 +39,7 @@ const Components = {
         `).join('');
 
         return `
-            <h2 class="section-title">Hot</h2>
+            <h2 class="section-title">Hot 🔥</h2>
             <div class="flex overflow-y-auto scroll-container">
                 <div class="flex items-stretch p-4 gap-3">
                     ${featuredHTML}
