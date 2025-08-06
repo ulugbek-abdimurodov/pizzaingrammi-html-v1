@@ -12,7 +12,7 @@ const PizzaData = {
             id: "featured-2",
             title: "Offerta speciale",
             description: "Ottieni un lato gratuito con qualsiasi grande ordine della pizza",
-            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center"
+            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVDi-9_LecMm6SeNNdIIN9KdHUeXn6BRyGQSD4ybb-3_csq5cAoPp60iVeuH86cXLM7Ve9rpRbS0elB2McFXzxPtBOzLJ_I14JKEdt9odyExUlJpzvua_oJ1cvXB7giiGxLUQE6_OUv0b2DJexfJGKaSFkk0MK4B49aEvHG5e3zp-yIPLELdrAbF-aUHkucJX0g_kLyijc3zpLtQkVgTpTslSbomoiqxlzf5Fqx7jFEWXMsnr1OO_SvRtJLcludsmTnime2hqgNtL9"
         },
         {
             id: "featured-3",
@@ -34,13 +34,13 @@ const PizzaData = {
             id: 'beverages',
             label: 'Bevande',
             active: false,
-            icon: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=80&h=80&fit=crop&crop=center'
+            icon: './assets/images/beverages/coca-cola-icon.jpg?w=80&h=80&fit=crop&crop=center'
         },
         {
             id: 'frittatinas',
             label: 'Frittatine',
             active: false,
-            icon: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=80&h=80&fit=crop&crop=center'
+            icon: './assets/images/frittatine/frittatina-icon.jpg?w=80&h=80&fit=crop&crop=center'
         },
         {
             id: 'desserts',

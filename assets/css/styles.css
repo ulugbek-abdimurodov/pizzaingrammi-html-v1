@@ -97,6 +97,9 @@ body {
 .badge-Pizze-dautore { background-color: #9333ea; }
 .badge-Vegetariana { background-color: #16a34a; }
 .badge-senza-glutine { background-color: #dc2626; }
+.badge-acqua { background-color: #0ea5e9; }
+.badge-bibite { background-color: #f97316; }
+.badge-alcolici { background-color: #f59e0b; }
 
 /* Menu Item Animation */
 .pizza-item {

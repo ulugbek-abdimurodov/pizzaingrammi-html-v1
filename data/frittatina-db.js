@@ -8,7 +8,7 @@ const FrittatinaDatabase = {
             price: "€4.50",
             category: ["classica"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/frittatine/frittatina-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ const FrittatinaDatabase = {
             price: "€5.50",
             category: ["classica"],
             tags: ["traditional"],
-            image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/frittatine/frittatina-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 3,
@@ -26,7 +26,7 @@ const FrittatinaDatabase = {
             price: "€5.00",
             category: ["vegetariana"],
             tags: ["vegetariana"],
-            image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/frittatine/frittatina-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 4,
@@ -35,7 +35,7 @@ const FrittatinaDatabase = {
             price: "€5.50",
             category: ["classica"],
             tags: ["hearty"],
-            image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/frittatine/frittatina-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 5,
@@ -44,7 +44,7 @@ const FrittatinaDatabase = {
             price: "€5.00",
             category: ["vegetariana"],
             tags: ["vegetariana"],
-            image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/frittatine/frittatina-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 6,
@@ -53,7 +53,7 @@ const FrittatinaDatabase = {
             price: "€5.00",
             category: ["vegetariana"],
             tags: ["vegetariana"],
-            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/frittatine/frittatina-icon.jpg?w=400&h=300&fit=crop&crop=center"
         }
     ],
 

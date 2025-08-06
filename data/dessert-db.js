@@ -68,8 +68,8 @@ const DessertDatabase = {
 
     getBadgeClass(category) {
         const badgeClasses = {
-            'classici': 'badge-classici',
-            'gluten-free': 'badge-gluten-free'
+            'classici': 'badge-classica',
+            'gluten-free': 'badge-senza-glutine'
         };
         return badgeClasses[category] || 'badge-classici';
     }

@@ -4,11 +4,11 @@ const BeverageDatabase = {
         {
             id: 1,
             name: "Acqua Naturale",
-            description: "Acqua naturale 500ml",
+            description: "acqua naturale 500ml",
             price: "€2.00",
             category: ["acqua"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/beverages/coca-cola-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ const BeverageDatabase = {
             price: "€2.00",
             category: ["acqua"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/beverages/coca-cola-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 3,
@@ -26,7 +26,7 @@ const BeverageDatabase = {
             price: "€3.50",
             category: ["bibite"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/beverages/coca-cola-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 4,
@@ -35,7 +35,7 @@ const BeverageDatabase = {
             price: "€3.50",
             category: ["bibite"],
             tags: ["popular"],
-            image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/beverages/coca-cola-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 5,
@@ -44,7 +44,7 @@ const BeverageDatabase = {
             price: "€4.50",
             category: ["alcolici"],
             tags: ["alcolici"],
-            image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=300&fit=crop&crop=center"
+            image: "./assets/images/beverages/coca-cola-icon.jpg?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 6,
