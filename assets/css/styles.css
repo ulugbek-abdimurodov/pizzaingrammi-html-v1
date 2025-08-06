@@ -7,7 +7,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
-    background-color: #232010;
+    background-color: #000000;
     color: white;
     min-height: 100vh;
 }
@@ -17,7 +17,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #232010;
+    background-color: #000000;
     overflow-x: hidden;
 }
 
@@ -70,8 +70,8 @@ body {
 }
 
 .filter-btn.active {
-    background-color: #eec80b;
-    color: #232010;
+    background-color: #ffa500;
+    color: #000000;
 }
 
 .filter-btn:not(.active) {

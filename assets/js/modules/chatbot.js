@@ -424,7 +424,7 @@ class PizzaChatbot {
         const chatbotHTML = `
             <!-- Chatbot Button -->
             <div id="chatbot-button" class="fixed bottom-6 right-6 z-50">
-                <button class="bg-[#eec80b] hover:bg-[#d4b509] text-[#232010] rounded-full p-4 shadow-lg transition-all duration-300 transform hover:scale-110">
+                <button class="bg-[#ffa500] hover:bg-[#d4b509] text-[#000000] rounded-full p-4 shadow-lg transition-all duration-300 transform hover:scale-110">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                     </svg>
@@ -432,9 +432,9 @@ class PizzaChatbot {
             </div>
 
             <!-- Chatbot Container -->
-            <div id="chatbot-container" class="fixed bottom-6 right-6 w-80 h-[500px] bg-[#232010] rounded-lg shadow-xl z-40 transform translate-y-full opacity-0 transition-all duration-300 border border-[#494222] hidden flex flex-col">
+            <div id="chatbot-container" class="fixed bottom-6 right-6 w-80 h-[500px] bg-[#000000] rounded-lg shadow-xl z-40 transform translate-y-full opacity-0 transition-all duration-300 border border-[#494222] hidden flex flex-col">
                 <!-- Header -->
-                <div class="bg-[#eec80b] text-[#232010] p-3 rounded-t-lg flex justify-between items-center flex-shrink-0">
+                <div class="bg-[#ffa500] text-[#000000] p-3 rounded-t-lg flex justify-between items-center flex-shrink-0">
                     <div class="flex items-center gap-2">
                         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                         <span class="font-bold text-sm">Pizzaingrammi Assistant</span>
@@ -561,7 +561,7 @@ class PizzaChatbot {
             if (sender === 'bot') {
                 messageElement.className = 'flex gap-2 items-start animate-fade-in';
                 messageElement.innerHTML = `
-                    <div class="w-8 h-8 bg-[#eec80b] rounded-full flex items-center justify-center text-[#232010] text-sm font-bold flex-shrink-0">
+                    <div class="w-8 h-8 bg-[#ffa500] rounded-full flex items-center justify-center text-[#000000] text-sm font-bold flex-shrink-0">
                         🍕
                     </div>
                     <div class="bg-[#494422] text-white p-3 rounded-lg max-w-64 text-sm leading-relaxed">
@@ -571,7 +571,7 @@ class PizzaChatbot {
             } else {
                 messageElement.className = 'flex justify-end animate-fade-in';
                 messageElement.innerHTML = `
-                    <div class="bg-[#eec80b] text-[#232010] p-3 rounded-lg max-w-64 text-sm leading-relaxed font-medium">
+                    <div class="bg-[#ffa500] text-[#000000] p-3 rounded-lg max-w-64 text-sm leading-relaxed font-medium">
                         ${message}
                     </div>
                 `;
@@ -655,7 +655,7 @@ class PizzaChatbot {
                             <div class="flex gap-1 flex-wrap">
                                 ${badgesHTML}
                             </div>
-                            <span class="text-[#eec80b] font-bold text-sm">${pizza.price}</span>
+                            <span class="text-[#ffa500] font-bold text-sm">${pizza.price}</span>
                         </div>
                     </div>
                 </div>

@@ -74,9 +74,9 @@ const FilterManager = {
             const category = link.dataset.category;
             if (category === categoryId) {
                 link.classList.remove('border-b-transparent', 'text-[#cbc190]');
-                link.classList.add('border-b-[#eec80b]', 'text-white');
+                link.classList.add('border-b-[#ffa500]', 'text-white');
             } else {
-                link.classList.remove('border-b-[#eec80b]', 'text-white');
+                link.classList.remove('border-b-[#ffa500]', 'text-white');
                 link.classList.add('border-b-transparent', 'text-[#cbc190]');
             }
         });

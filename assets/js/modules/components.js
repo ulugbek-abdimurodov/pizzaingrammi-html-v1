@@ -52,7 +52,7 @@ const Components = {
     createMenuNavigation() {
         const navItems = dbManager.getMenuCategories().map(category => {
             const activeClass = category.active 
-                ? 'border-b-[3px] border-b-[#eec80b] text-white' 
+                ? 'border-b-[3px] border-b-[#ffa500] text-white' 
                 : 'border-b-[3px] border-b-transparent text-[#cbc190]';
             
             return `
