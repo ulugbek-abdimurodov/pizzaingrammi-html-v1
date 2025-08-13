@@ -137,10 +137,9 @@ const CategoryDatabase = {
 
 ## 🚀 Future Enhancements
 
-- [ ] Add shopping cart functionality
-- [ ] Implement order management system
+- [ ] Add loyalty cart functionality
+- [ ] Implement loyalty program with administration
 - [ ] Add user authentication
-- [ ] Integrate with payment systems
 - [ ] Add admin panel for menu management
 
 ---
