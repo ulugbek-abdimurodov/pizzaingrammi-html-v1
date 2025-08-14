@@ -1,5 +1,5 @@
 // Components Module
-const Components = {
+export const Components = {
     // Header component
     createHeader() {
         return `
@@ -27,114 +27,248 @@ const Components = {
     },
 
     // Featured section component
-    createFeatured() {
-        const featuredItems = dbManager.getFeaturedItems();
-        const featuredHTML = featuredItems.map(item => `
-            <div class="flex-shrink-0 w-64">
-                <div class="bg-center bg-no-repeat aspect-video bg-cover rounded-xl mb-3" 
-                     style='background-image: url("${item.image}");'></div>
-                <h3 class="text-white text-base font-bold leading-tight mb-1">${item.title}</h3>
-                <p class="text-[#cbc190] text-sm font-normal leading-normal">${item.description}</p>
-            </div>
-        `).join('');
-
-        return `
-            <h2 class="section-title">Hot 🔥</h2>
-            <div class="flex overflow-y-auto scroll-container">
-                <div class="flex items-stretch p-4 gap-3">
-                    ${featuredHTML}
+    async createFeatured() {
+        try {
+            const featuredItems = await dbManager.getFeaturedItems();
+            
+            if (!featuredItems || featuredItems.length === 0) {
+                return `
+                    <h2 class="section-title">Hot 🔥</h2>
+                    <div class="flex overflow-y-auto scroll-container">
+                        <div class="flex items-stretch p-4 gap-3">
+                            <p class="text-[#cbc190] text-center w-full">Loading featured items...</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const featuredHTML = featuredItems.map(item => `
+                <div class="flex-shrink-0 w-64">
+                    <div class="bg-center bg-no-repeat aspect-video bg-cover rounded-xl mb-3" 
+                         style='background-image: url("${item.image}");'></div>
+                    <h3 class="text-white text-base font-bold leading-tight mb-1">${item.name || item.title}</h3>
+                    <p class="text-[#cbc190] text-sm font-normal leading-normal">${item.description}</p>
                 </div>
-            </div>
-        `;
+            `).join('');
+
+            return `
+                <h2 class="section-title">Hot 🔥</h2>
+                <div class="flex overflow-y-auto scroll-container">
+                    <div class="flex items-stretch p-4 gap-3">
+                        ${featuredHTML}
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Error creating featured section:', error);
+            return `
+                <h2 class="section-title">Hot 🔥</h2>
+                <div class="flex overflow-y-auto scroll-container">
+                    <div class="flex items-stretch p-4 gap-3">
+                        <p class="text-[#cbc190] text-center w-full">Loading featured items...</p>
+                    </div>
+                </div>
+            `;
+        }
     },
 
     // Menu navigation component
-    createMenuNavigation() {
-        const navItems = dbManager.getMenuCategories().map(category => {
-            const activeClass = category.active 
-                ? 'border-b-[3px] border-b-[#ffa500] text-white' 
-                : 'border-b-[3px] border-b-transparent text-[#cbc190]';
+    async createMenuNavigation() {
+        try {
+            const categories = await dbManager.getMenuCategories();
             
-            return `
-                <a class="flex flex-col items-center justify-center ${activeClass} gap-2 pb-[7px] pt-2.5" 
-                   href="#" data-category="${category.id}">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
-                         style='background-image: url("${category.icon}");'></div>
-                    <p class="text-sm font-bold leading-normal tracking-[0.015em]">${category.label}</p>
-                </a>
-            `;
-        }).join('');
+            // Create navigation items with proper data structure
+            const navItems = categories.map((category, index) => {
+                // Map category names to database manager category IDs
+                const categoryMap = {
+                    'Pizze': 'pizzas',
+                    'Bevande': 'beverages', 
+                    'Frittatine': 'frittatinas',
+                    'Dessert': 'desserts'
+                };
+                
+                const categoryId = categoryMap[category] || `category-${index}`;
+                const categoryLabel = category;
+                const categoryIcon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzY4NWYzMSIvPgo8L3N2Zz4K';
+                
+                // Set first category (Pizze) as active by default
+                const isActive = index === 0;
+                const activeClass = isActive ? 'border-b-[#ffa500] text-white' : 'border-b-transparent text-[#cbc190]';
+                
+                return `
+                    <a class="flex flex-col items-center justify-center border-b-[3px] ${activeClass} gap-2 pb-[7px] pt-2.5" 
+                       href="#" data-category="${categoryId}" onclick="window.switchCategory('${categoryId}')">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
+                             style='background-image: url("${categoryIcon}");'></div>
+                        <p class="text-sm font-bold leading-normal tracking-[0.015em]">${categoryLabel}</p>
+                    </a>
+                `;
+            }).join('');
 
-        return `
-            <h2 class="section-title">Menu</h2>
-            <div class="pb-3">
-                <div class="flex border-b border-[#685f31] px-4 gap-8">
-                    ${navItems}
+            return `
+                <h2 class="section-title">Menu</h2>
+                <div class="pb-3">
+                    <div class="flex border-b border-[#685f31] px-4 gap-8">
+                        ${navItems}
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        } catch (error) {
+            console.error('Error creating menu navigation:', error);
+            return `
+                <h2 class="section-title">Menu</h2>
+                <div class="pb-3">
+                    <div class="flex border-b border-[#685f31] px-4 gap-8">
+                        <p class="text-white">Loading...</p>
+                    </div>
+                </div>
+            `;
+        }
     },
 
     // Filter section component
-    createFilterSection() {
-        const filterButtons = dbManager.getFilterOptions().map(filter => {
-            const activeClass = filter.active ? 'active' : '';
-            return `
-                <button class="filter-btn ${activeClass}" data-filter="${filter.id}">
-                    <p class="text-sm font-medium leading-normal">${filter.label}</p>
+    async createFilterSection() {
+        try {
+            const filterOptions = await dbManager.getFilterOptions();
+            
+            if (!filterOptions || !filterOptions.categories || filterOptions.categories.length === 0) {
+                return `
+                    <div class="px-4 py-3">
+                        <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Filter</h3>
+                        <div class="filter-container flex gap-2 flex-wrap">
+                            <p class="text-white">No filters available yet</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const filterButtons = `
+                <button class="filter-btn active" data-filter="all">
+                    <p class="text-sm font-medium leading-normal">All</p>
                 </button>
+                ${filterOptions.categories.map(category => {
+                    return `
+                        <button class="filter-btn" data-filter="${category}">
+                            <p class="text-sm font-medium leading-normal">${category.charAt(0).toUpperCase() + category.slice(1)}</p>
+                        </button>
+                    `;
+                }).join('')}
             `;
-        }).join('');
 
-        return `
-            <div class="px-4 py-3">
-                <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Filter</h3>
-                <div class="filter-container flex gap-2 flex-wrap">
-                    ${filterButtons}
+            return `
+                <div class="px-4 py-3">
+                    <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Filter</h3>
+                    <div class="filter-container flex gap-2 flex-wrap">
+                        ${filterButtons}
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        } catch (error) {
+            console.error('Error creating filter section:', error);
+            return `
+                <div class="px-4 py-3">
+                    <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">Filter</h3>
+                    <div class="filter-container flex gap-2 flex-wrap">
+                        <p class="text-white">Loading filters...</p>
+                    </div>
+                </div>
+            `;
+        }
     },
 
     // Menu item component - removed price button
-    createMenuItem(item) {
-        const badges = item.category.map(cat => 
-            `<span class="badge ${dbManager.getBadgeClass(cat)}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`
-        ).join('');
+    async createMenuItem(item) {
+        try {
+            const badgePromises = item.category.map(async cat => {
+                const badgeClass = await dbManager.getBadgeClass(cat);
+                return `<span class="badge ${badgeClass}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>`;
+            });
+            
+            const badges = await Promise.all(badgePromises);
+            const badgesHTML = badges.join('');
 
-        const tags = item.tags.length > 0 
-            ? `<p class="text-[#cbc190] text-sm font-normal leading-normal">${item.tags[0].charAt(0).toUpperCase() + item.tags[0].slice(1)}</p>`
-            : '';
+            const tags = item.tags && item.tags.length > 0 
+                ? `<p class="text-[#cbc190] text-sm font-normal leading-normal">${item.tags[0].charAt(0).toUpperCase() + item.tags[0].slice(1)}</p>`
+                : '';
 
-        return `
-            <div class="p-4 pizza-item fade-in" data-category="${item.category.join(' ')}" data-name="${item.name.toLowerCase()}" data-id="${item.id}">
-                <div class="flex items-stretch justify-between gap-4 rounded-xl pizza-item-content">
-                    <div class="flex flex-[2_2_0px] flex-col gap-4">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex gap-2 items-center flex-wrap">
-                                ${tags}
-                                ${badges}
+            return `
+                <div class="p-4 pizza-item fade-in" data-category="${Array.isArray(item.category) ? item.category.join(' ') : item.category}" data-name="${item.name.toLowerCase()}" data-id="${item.id}">
+                    <div class="flex items-stretch justify-between gap-4 rounded-xl pizza-item-content">
+                        <div class="flex flex-[2_2_0px] flex-col gap-4">
+                            <div class="flex flex-col gap-1">
+                                <div class="flex gap-2 items-center flex-wrap">
+                                    ${tags}
+                                    ${badgesHTML}
+                                </div>
+                                <p class="text-white text-base font-bold leading-tight">${item.name}</p>
+                                <p class="text-[#cbc190] text-sm font-normal leading-normal">${item.description}</p>
                             </div>
-                            <p class="text-white text-base font-bold leading-tight">${item.name}</p>
-                            <p class="text-[#cbc190] text-sm font-normal leading-normal">${item.description}</p>
+                            <div class="text-white text-lg font-bold">
+                                ${item.price}
+                            </div>
                         </div>
-                        <div class="text-white text-lg font-bold">
-                            ${item.price}
-                        </div>
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1 pizza-item-image" 
+                             style='background-image: url("${item.image}");'></div>
                     </div>
-                    <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1 pizza-item-image" 
-                         style='background-image: url("${item.image}");'></div>
                 </div>
-            </div>
-        `;
+            `;
+        } catch (error) {
+            console.error('Error creating menu item:', error);
+            return `
+                <div class="p-4 pizza-item fade-in" data-id="${item.id}">
+                    <div class="text-white text-center">Error loading item</div>
+                </div>
+            `;
+        }
     },
 
     // Render all menu items
-    renderMenuItems(items = null) {
+    async renderMenuItems(items = null) {
         const container = document.getElementById('menu-items');
         if (!container) return;
 
-        const menuItems = items || dbManager.getMenuItems();
-        container.innerHTML = menuItems.map(item => this.createMenuItem(item)).join('');
+        try {
+            let menuItems;
+            
+            if (items) {
+                console.log('📋 Using passed items:', items);
+                menuItems = items;
+            } else {
+                // Always await getMenuItems since it's async
+                console.log('📋 Calling dbManager.getMenuItems()...');
+                menuItems = await dbManager.getMenuItems();
+                console.log('📋 Result from getMenuItems:', menuItems);
+            }
+            
+            console.log('📋 Final menuItems:', menuItems);
+            console.log('📋 Type of menuItems:', typeof menuItems);
+            console.log('📋 Is array:', Array.isArray(menuItems));
+            
+            // Ensure menuItems is an array
+            if (!Array.isArray(menuItems)) {
+                console.warn('Menu items is not an array:', menuItems);
+                container.innerHTML = '<p class="text-white text-center p-8">No menu items available</p>';
+                return;
+            }
+            
+            if (menuItems.length === 0) {
+                container.innerHTML = '<p class="text-white text-center p-8">No items in this category yet</p>';
+                return;
+            }
+            
+            console.log(`🎯 Rendering ${menuItems.length} menu items`);
+            
+            const menuItemPromises = menuItems.map(item => this.createMenuItem(item));
+            const menuItemHTMLs = await Promise.all(menuItemPromises);
+            container.innerHTML = menuItemHTMLs.join('');
+            
+            console.log('✅ Menu items rendered successfully');
+        } catch (error) {
+            console.error('Error rendering menu items:', error);
+            container.innerHTML = '<p class="text-white text-center p-8">Error loading menu items</p>';
+        }
     }
 };
+
+// Default export for backward compatibility
+export default Components;

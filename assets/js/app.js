@@ -1,4 +1,7 @@
 // Main Application Module
+import { Components } from './modules/components.js';
+import { FilterManager, setComponents } from './modules/filters.js';
+
 class PizzaApp {
     constructor() {
         this.isInitialized = false;
@@ -14,11 +17,16 @@ class PizzaApp {
         }
     }
 
-    initialize() {
+    async initialize() {
         if (this.isInitialized) return;
         
         try {
-            this.renderComponents();
+            // Wait for Google Sheets to be ready before rendering components
+            console.log('⏳ Waiting for Google Sheets to initialize...');
+            await dbManager.waitForInitialization();
+            console.log('✅ Google Sheets ready, rendering components...');
+            
+            await this.renderComponents();
             this.initializeModules();
             this.bindGlobalEvents();
             this.isInitialized = true;
@@ -29,44 +37,63 @@ class PizzaApp {
         }
     }
 
-    renderComponents() {
-        // Render header
-        const headerElement = document.getElementById('header');
-        if (headerElement) {
-            headerElement.innerHTML = Components.createHeader();
-        }
+    async renderComponents() {
+        try {
+            // Render header
+            const headerElement = document.getElementById('header');
+            if (headerElement) {
+                headerElement.innerHTML = Components.createHeader();
+            }
 
-        // Render featured section
-        const featuredElement = document.getElementById('featured-section');
-        if (featuredElement) {
-            featuredElement.innerHTML = Components.createFeatured();
-        }
+            // Render featured section
+            const featuredElement = document.getElementById('featured-section');
+            if (featuredElement) {
+                featuredElement.innerHTML = await Components.createFeatured();
+            }
 
-        // Render menu navigation
-        const menuNavElement = document.getElementById('menu-navigation');
-        if (menuNavElement) {
-            menuNavElement.innerHTML = Components.createMenuNavigation();
-        }
+            // Render menu navigation
+            const menuNavElement = document.getElementById('menu-navigation');
+            if (menuNavElement) {
+                menuNavElement.innerHTML = await Components.createMenuNavigation();
+            }
 
-        // Render filter section
-        const filterElement = document.getElementById('filter-section');
-        if (filterElement) {
-            filterElement.innerHTML = Components.createFilterSection();
-        }
+            // Render filter section
+            const filterElement = document.getElementById('filter-section');
+            if (filterElement) {
+                filterElement.innerHTML = await Components.createFilterSection();
+            }
 
-        // Render footer
-        const footerElement = document.getElementById('footer');
-        if (footerElement) {
-            footerElement.innerHTML = Components.createFooter();
-        }
+            // Render footer
+            const footerElement = document.getElementById('footer');
+            if (footerElement) {
+                footerElement.innerHTML = Components.createFooter();
+            }
 
-        // Render initial menu items
-        Components.renderMenuItems();
+            // Render initial menu items
+            await Components.renderMenuItems();
+        } catch (error) {
+            console.error('Error rendering components:', error);
+        }
     }
 
-    initializeModules() {
-        // Initialize filter manager
-        FilterManager.init();
+    async initializeModules() {
+        try {
+            // Set Components reference in FilterManager
+            if (typeof setComponents === 'function') {
+                setComponents(Components);
+                console.log('✅ Components reference set in FilterManager');
+            }
+            
+            // Initialize filter manager
+            if (typeof FilterManager !== 'undefined') {
+                FilterManager.init();
+                console.log('✅ FilterManager initialized');
+            } else {
+                console.warn('FilterManager not available, chatbot may not work properly');
+            }
+        } catch (error) {
+            console.error('Error initializing modules:', error);
+        }
     }
 
     bindGlobalEvents() {
@@ -167,7 +194,9 @@ class PizzaApp {
     }
 
     // Category switching method
-    switchCategory(categoryId) {
+    async switchCategory(categoryId) {
+        console.log('🔄 Switching to category:', categoryId);
+        
         // Update active category in menu navigation
         const categoryLinks = document.querySelectorAll('[data-category]');
         categoryLinks.forEach(link => {
@@ -183,17 +212,31 @@ class PizzaApp {
 
         // Update database and re-render
         if (dbManager.setCategory(categoryId)) {
-            // Re-render filter section with new database
-            const filterElement = document.getElementById('filter-section');
-            if (filterElement) {
-                filterElement.innerHTML = Components.createFilterSection();
-            }
+            try {
+                console.log('✅ Category updated in database manager');
+                
+                // Re-render filter section with new database
+                const filterElement = document.getElementById('filter-section');
+                if (filterElement) {
+                    filterElement.innerHTML = await Components.createFilterSection();
+                }
 
-            // Re-render menu items
-            Components.renderMenuItems();
-            
-            // Reset filters
-            FilterManager.reset();
+                // Re-render menu items
+                console.log('🔄 Re-rendering menu items...');
+                await Components.renderMenuItems();
+                console.log('✅ Menu items re-rendered');
+                
+                // Reset filters if FilterManager is available
+                if (typeof FilterManager !== 'undefined' && FilterManager.reset) {
+                    FilterManager.reset();
+                }
+                
+                console.log('✅ Category switch completed successfully');
+            } catch (error) {
+                console.error('Error switching category:', error);
+            }
+        } else {
+            console.error('❌ Failed to update category in database manager');
         }
     }
 
@@ -209,3 +252,8 @@ const app = new PizzaApp();
 
 // Make app globally available for debugging
 window.PizzaApp = app;
+
+// Make category switching available globally
+window.switchCategory = function(categoryId) {
+    app.switchCategory(categoryId);
+};

@@ -102,15 +102,15 @@ const ChatbotLogic = {
         selectedCategory: null
     },
 
-    processUserChoice(choice, chatbot) {
+    async processUserChoice(choice, chatbot) {
         const response = ChatbotResponses.getResponse(choice);
         
         if (response) {
             chatbot.showMessage(response.message, 'bot');
             
             if (response.filterBy) {
-                setTimeout(() => {
-                    this.showFilteredPizzas(response.filterBy, chatbot);
+                setTimeout(async () => {
+                    await this.showFilteredPizzas(response.filterBy, chatbot);
                 }, 1000);
             }
         } else {
@@ -118,7 +118,7 @@ const ChatbotLogic = {
         }
     },
 
-    showFilteredPizzas(filterBy, chatbot) {
+    async showFilteredPizzas(filterBy, chatbot) {
         // Switch to pizza database
         if (typeof dbManager !== 'undefined') {
             dbManager.setCategory('pizzas');
@@ -126,44 +126,49 @@ const ChatbotLogic = {
         
         let filteredPizzas = [];
         
-        if (filterBy === "all") {
-            filteredPizzas = typeof dbManager !== 'undefined' ? dbManager.getMenuItems() : PizzaDatabase.menuItems;
-        } else {
-            const menuItems = typeof dbManager !== 'undefined' ? dbManager.getMenuItems() : PizzaDatabase.menuItems;
-            filteredPizzas = menuItems.filter(pizza => 
-                pizza.category.includes(filterBy)
-            );
-        }
-        
-        if (filteredPizzas.length === 0) {
-            chatbot.showMessage("Mi dispiace, non abbiamo pizze in questa categoria al momento.", 'bot');
-            setTimeout(() => {
-                const categoryOptions = ChatbotResponses.getCategoryOptions();
-                chatbot.showMessage(categoryOptions.message, 'bot');
-                chatbot.showOptions(categoryOptions.options);
-            }, 1000);
-            return;
-        }
+        try {
+            if (filterBy === "all") {
+                filteredPizzas = typeof dbManager !== 'undefined' ? await dbManager.getMenuItems() : PizzaDatabase.menuItems;
+            } else {
+                const menuItems = typeof dbManager !== 'undefined' ? await dbManager.getMenuItems() : PizzaDatabase.menuItems;
+                filteredPizzas = menuItems.filter(pizza => 
+                    pizza.category.includes(filterBy)
+                );
+            }
+            
+            if (filteredPizzas.length === 0) {
+                chatbot.showMessage("Mi dispiace, non abbiamo pizze in questa categoria al momento.", 'bot');
+                setTimeout(() => {
+                    const categoryOptions = ChatbotResponses.getCategoryOptions();
+                    chatbot.showMessage(categoryOptions.message, 'bot');
+                    chatbot.showOptions(categoryOptions.options);
+                }, 1000);
+                return;
+            }
 
-        // Show pizza cards
-        filteredPizzas.forEach((pizza, index) => {
+            // Show pizza cards
+            filteredPizzas.forEach((pizza, index) => {
+                setTimeout(() => {
+                    const cardElement = chatbot.showPizzaCard(pizza);
+                    if (cardElement) {
+                        cardElement.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.selectPizza(pizza, chatbot);
+                        });
+                    }
+                }, index * 200);
+            });
+            
+            // Show continue options after all pizzas are displayed
             setTimeout(() => {
-                const cardElement = chatbot.showPizzaCard(pizza);
-                if (cardElement) {
-                    cardElement.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.selectPizza(pizza, chatbot);
-                    });
-                }
-            }, index * 200);
-        });
-        
-        // Show continue options after all pizzas are displayed
-        setTimeout(() => {
-            const continueOptions = ChatbotResponses.getContinueOptions();
-            chatbot.showOptions(continueOptions.options);
-        }, filteredPizzas.length * 200 + 500);
+                const continueOptions = ChatbotResponses.getContinueOptions();
+                chatbot.showOptions(continueOptions.options);
+            }, filteredPizzas.length * 200 + 500);
+        } catch (error) {
+            console.error('Error showing filtered pizzas:', error);
+            chatbot.showMessage("Mi dispiace, c'è stato un errore nel caricare le pizze. Riprova più tardi.", 'bot');
+        }
     },
 
     selectPizza(pizza, chatbot) {
@@ -231,7 +236,7 @@ const ChatbotLogic = {
         }
     },
 
-    showCategoryInfo(categoryName, chatbot) {
+    async showCategoryInfo(categoryName, chatbot) {
         // Switch to appropriate database
         let dbCategory = '';
         let displayName = '';
@@ -251,81 +256,86 @@ const ChatbotLogic = {
                 break;
         }
         
-        if (dbCategory && typeof dbManager !== 'undefined' && dbManager.setCategory(dbCategory)) {
-            const items = dbManager.getMenuItems();
-            
-            if (items && items.length > 0) {
-                chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
+        try {
+            if (dbCategory && typeof dbManager !== 'undefined' && dbManager.setCategory(dbCategory)) {
+                const items = await dbManager.getMenuItems();
                 
-                items.forEach((item, index) => {
+                if (items && items.length > 0) {
+                    chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
+                    
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            const cardElement = chatbot.showPizzaCard(item);
+                            if (cardElement) {
+                                cardElement.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    this.selectItem(item, chatbot);
+                                });
+                            }
+                        }, index * 200);
+                    });
+                    
                     setTimeout(() => {
-                        const cardElement = chatbot.showPizzaCard(item);
-                        if (cardElement) {
-                            cardElement.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                this.selectItem(item, chatbot);
-                            });
-                        }
-                    }, index * 200);
-                });
-                
-                setTimeout(() => {
-                    const finalOptions = ChatbotResponses.getFinalOptions();
-                    chatbot.showOptions(finalOptions.options);
-                }, items.length * 200 + 500);
-            } else {
-                chatbot.showMessage(`Al momento non abbiamo ${displayName} disponibili. 😔`, 'bot');
-                setTimeout(() => {
-                    const finalOptions = ChatbotResponses.getFinalOptions();
-                    chatbot.showOptions(finalOptions.options);
-                }, 2000);
-            }
-        } else {
-            // Fallback - try to use individual database objects
-            let database = null;
-            switch(categoryName) {
-                case 'frittatine':
-                    database = typeof FrittatinaDatabase !== 'undefined' ? FrittatinaDatabase : null;
-                    displayName = 'Frittatine';
-                    break;
-                case 'bevande':
-                    database = typeof BeverageDatabase !== 'undefined' ? BeverageDatabase : null;
-                    displayName = 'Bevande';
-                    break;
-                case 'desserts':
-                    database = typeof DessertDatabase !== 'undefined' ? DessertDatabase : null;
-                    displayName = 'Dessert';
-                    break;
-            }
-            
-            if (database && database.menuItems && database.menuItems.length > 0) {
-                chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
-                
-                database.menuItems.forEach((item, index) => {
+                        const finalOptions = ChatbotResponses.getFinalOptions();
+                        chatbot.showOptions(finalOptions.options);
+                    }, items.length * 200 + 500);
+                } else {
+                    chatbot.showMessage(`Al momento non abbiamo ${displayName} disponibili. 😔`, 'bot');
                     setTimeout(() => {
-                        const cardElement = chatbot.showPizzaCard(item);
-                        if (cardElement) {
-                            cardElement.addEventListener('click', (e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                this.selectItem(item, chatbot);
-                            });
-                        }
-                    }, index * 200);
-                });
-                
-                setTimeout(() => {
-                    const finalOptions = ChatbotResponses.getFinalOptions();
-                    chatbot.showOptions(finalOptions.options);
-                }, database.menuItems.length * 200 + 500);
+                        const finalOptions = ChatbotResponses.getFinalOptions();
+                        chatbot.showOptions(finalOptions.options);
+                    }, 2000);
+                }
             } else {
-                chatbot.showMessage(`Al momento stiamo preparando il menu delle ${displayName}. Torneremo presto! 🔜`, 'bot');
-                setTimeout(() => {
-                    const finalOptions = ChatbotResponses.getFinalOptions();
-                    chatbot.showOptions(finalOptions.options);
-                }, 2000);
+                // Fallback - try to use individual database objects
+                let database = null;
+                switch(categoryName) {
+                    case 'frittatine':
+                        database = typeof FrittatinaDatabase !== 'undefined' ? FrittatinaDatabase : null;
+                        displayName = 'Frittatine';
+                        break;
+                    case 'bevande':
+                        database = typeof BeverageDatabase !== 'undefined' ? BeverageDatabase : null;
+                        displayName = 'Bevande';
+                        break;
+                    case 'desserts':
+                        database = typeof DessertDatabase !== 'undefined' ? DessertDatabase : null;
+                        displayName = 'Dessert';
+                        break;
+                }
+                
+                if (database && database.menuItems && database.menuItems.length > 0) {
+                    chatbot.showMessage(`Ecco le nostre ${displayName}:`, 'bot');
+                    
+                    database.menuItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            const cardElement = chatbot.showPizzaCard(item);
+                            if (cardElement) {
+                                cardElement.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    this.selectItem(item, chatbot);
+                                });
+                            }
+                        }, index * 200);
+                    });
+                    
+                    setTimeout(() => {
+                        const finalOptions = ChatbotResponses.getFinalOptions();
+                        chatbot.showOptions(finalOptions.options);
+                    }, database.menuItems.length * 200 + 500);
+                } else {
+                    chatbot.showMessage(`Al momento stiamo preparando il menu delle ${displayName}. Torneremo presto! 🔜`, 'bot');
+                    setTimeout(() => {
+                        const finalOptions = ChatbotResponses.getFinalOptions();
+                        chatbot.showOptions(finalOptions.options);
+                    }, 2000);
+                }
             }
+        } catch (error) {
+            console.error('Error showing category info:', error);
+            chatbot.showMessage("Mi dispiace, c'è stato un errore nel caricare le informazioni. Riprova più tardi.", 'bot');
         }
     },
 
@@ -746,3 +756,7 @@ if (document.readyState === 'loading') {
 } else {
     setTimeout(initializeChatbot, 1000);
 }
+
+// Export for ES6 modules
+export { PizzaChatbot, ChatbotResponses, ChatbotLogic };
+export default PizzaChatbot;

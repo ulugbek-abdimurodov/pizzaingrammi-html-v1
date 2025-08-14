@@ -38,20 +38,22 @@
     </div>
     
     <!-- Scripts -->
-    <!-- Database Files -->
-    <script src="data/pizza-db.js"></script>
-    <script src="data/frittatina-db.js"></script>
-    <script src="data/beverage-db.js"></script>
-    <script src="data/dessert-db.js"></script>
-    
-    <!-- Core Data and Manager -->
-    <script src="data/data.js"></script>
-    <script src="assets/js/utils/database-manager.js"></script>
+    <!-- Google Sheets Integration (Load First) -->
+    <script type="module" src="assets/js/utils/google-sheets-config.js"></script>
+    <script type="module" src="assets/js/utils/google-sheets-service.js"></script>
+    <script type="module" src="assets/js/utils/database-manager.js"></script>
     
     <!-- Application Files -->
-    <script src="assets/js/modules/components.js"></script>
-    <script src="assets/js/modules/filters.js"></script>
-    <script src="assets/js/modules/chatbot.js"></script>
-    <script src="assets/js/app.js"></script>
+    <script type="module" src="assets/js/modules/components.js"></script>
+    <script type="module" src="assets/js/modules/filters.js"></script>
+    <script type="module" src="assets/js/modules/chatbot.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
+    
+    <!-- Initialize Database Manager Globally -->
+    <script type="module">
+        import { dbManager } from './assets/js/utils/database-manager.js';
+        window.dbManager = dbManager;
+        console.log('🌐 Database Manager loaded globally:', window.dbManager);
+    </script>
 </body>
 </html>

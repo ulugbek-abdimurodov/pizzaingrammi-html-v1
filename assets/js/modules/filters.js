@@ -1,4 +1,11 @@
 // Filter Management Module
+let Components = null;
+
+// Function to set Components reference
+const setComponents = (componentsModule) => {
+    Components = componentsModule;
+};
+
 const FilterManager = {
     activeFilters: ['all'],
 
@@ -8,30 +15,33 @@ const FilterManager = {
     },
 
     bindFilterEvents() {
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', async (e) => {
             if (e.target.closest('.filter-btn')) {
                 e.preventDefault();
                 const button = e.target.closest('.filter-btn');
                 const filter = button.dataset.filter;
-                this.toggleFilter(filter);
+                await this.toggleFilter(filter);
             }
         });
     },
 
     bindCategoryEvents() {
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', async (e) => {
             if (e.target.closest('[data-category]')) {
                 const categoryLink = e.target.closest('[data-category]');
                 if (categoryLink.getAttribute('href') === '#') {
                     e.preventDefault();
                     const category = categoryLink.dataset.category;
-                    this.switchMenuCategory(category);
+                    await this.switchMenuCategory(category);
                 }
             }
         });
     },
 
-    toggleFilter(filterId) {
+    async toggleFilter(filterId) {
+        console.log('🔄 Toggling filter:', filterId);
+        console.log('📊 Current active filters:', this.activeFilters);
+        
         if (filterId === 'all') {
             this.activeFilters = ['all'];
         } else {
@@ -50,9 +60,11 @@ const FilterManager = {
                 this.activeFilters = ['all'];
             }
         }
+        
+        console.log('📊 New active filters:', this.activeFilters);
 
         this.updateFilterUI();
-        this.applyFilters();
+        await this.applyFilters();
     },
 
     updateFilterUI() {
@@ -67,7 +79,7 @@ const FilterManager = {
         });
     },
 
-    switchMenuCategory(categoryId) {
+    async switchMenuCategory(categoryId) {
         // Update category UI
         const categoryLinks = document.querySelectorAll('[data-category]');
         categoryLinks.forEach(link => {
@@ -83,13 +95,13 @@ const FilterManager = {
 
         // Switch database and re-render components
         if (dbManager.setCategory(categoryId)) {
-            this.reloadCategoryContent();
+            await this.reloadCategoryContent();
         } else {
             this.showEmptyState(categoryId);
         }
     },
 
-    reloadCategoryContent() {
+    async reloadCategoryContent() {
         // Re-render filter section with new database
         const filterElement = document.getElementById('filter-section');
         if (filterElement) {
@@ -99,7 +111,7 @@ const FilterManager = {
         // Reset filters and apply
         this.activeFilters = ['all'];
         this.updateFilterUI();
-        this.applyFilters();
+        await this.applyFilters();
     },
 
     showEmptyState(categoryId) {
@@ -116,10 +128,16 @@ const FilterManager = {
         `;
     },
 
-    applyFilters() {
-        const filteredItems = dbManager.getFilteredItems(this.activeFilters);
-        this.animateFilterChange(filteredItems);
-        this.updateResultsCount(filteredItems.length);
+    async applyFilters() {
+        try {
+            console.log('🔍 Applying filters:', this.activeFilters);
+            const filteredItems = await dbManager.getFilteredItems(this.activeFilters);
+            console.log('📊 Filtered items result:', filteredItems);
+            this.animateFilterChange(filteredItems);
+            this.updateResultsCount(filteredItems.length);
+        } catch (error) {
+            console.error('Error applying filters:', error);
+        }
     },
 
     animateFilterChange(filteredItems) {
@@ -158,11 +176,14 @@ const FilterManager = {
         const filterSection = document.getElementById('filter-section');
         if (!filterSection) return;
 
+        const filterContainer = filterSection.querySelector('.filter-container');
+        if (!filterContainer) return;
+
         let countElement = filterSection.querySelector('.results-count');
         if (!countElement) {
             countElement = document.createElement('p');
             countElement.className = 'results-count text-[#cbc190] text-sm mt-2';
-            filterSection.querySelector('.filter-container').parentNode.appendChild(countElement);
+            filterContainer.parentNode.appendChild(countElement);
         }
 
         if (count === 0) {
@@ -176,9 +197,13 @@ const FilterManager = {
         }
     },
 
-    reset() {
+    async reset() {
         this.activeFilters = ['all'];
         this.updateFilterUI();
-        this.applyFilters();
+        await this.applyFilters();
     }
 };
+
+// Export for ES6 modules
+export { FilterManager, setComponents };
+export default FilterManager;
