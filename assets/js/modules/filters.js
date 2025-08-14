@@ -105,7 +105,7 @@ const FilterManager = {
         // Re-render filter section with new database
         const filterElement = document.getElementById('filter-section');
         if (filterElement) {
-            filterElement.innerHTML = Components.createFilterSection();
+            filterElement.innerHTML = await Components.createFilterSection();
         }
 
         // Reset filters and apply

@@ -28,25 +28,25 @@ const PizzaData = {
             id: 'pizzas',
             label: 'Pizze',
             active: true,
-            icon: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=80&h=80&fit=crop&crop=center'
+            icon: './assets/images/beverages/coca-cola-icon.jpg?w=80&h=80&fit=crop&crop=center'
         },
         {
             id: 'beverages',
             label: 'Bevande',
             active: false,
-            icon: './assets/images/beverages/coca-cola-icon.jpg?w=80&h=80&fit=crop&crop=center'
+            icon: './assets/images/beverages/coca-cola-icon.jpg'
         },
         {
             id: 'frittatinas',
             label: 'Frittatine',
             active: false,
-            icon: './assets/images/frittatine/frittatina-icon.jpg?w=80&h=80&fit=crop&crop=center'
+            icon: './assets/images/frittatine/frittatina-icon.jpg'
         },
         {
             id: 'desserts',
             label: 'Dessert',
             active: false,
-            icon: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=80&h=80&fit=crop&crop=center'
+            icon: './assets/images/desserts/tiramisu.jpg'
         }
     ]
 };

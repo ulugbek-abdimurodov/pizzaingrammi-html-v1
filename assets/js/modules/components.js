@@ -89,7 +89,25 @@ export const Components = {
                 
                 const categoryId = categoryMap[category] || `category-${index}`;
                 const categoryLabel = category;
-                const categoryIcon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzY4NWYzMSIvPgo8L3N2Zz4K';
+                
+                // Get the appropriate icon for each category
+                let categoryIcon;
+                switch (categoryId) {
+                    case 'pizzas':
+                        categoryIcon = './assets/images/pizzas/pizza-icon.JPG';
+                        break;
+                    case 'beverages':
+                        categoryIcon = './assets/images/beverages/coca-cola-icon.jpg';
+                        break;
+                    case 'frittatinas':
+                        categoryIcon = './assets/images/frittatine/frittatina-icon.jpg';
+                        break;
+                    case 'desserts':
+                        categoryIcon = './assets/images/desserts/tiramisu.jpg';
+                        break;
+                    default:
+                        categoryIcon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzY4NWYzMSIvPgo8L3N2Zz4K';
+                }
                 
                 // Set first category (Pizze) as active by default
                 const isActive = index === 0;
