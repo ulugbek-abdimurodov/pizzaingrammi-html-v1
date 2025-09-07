@@ -172,39 +172,58 @@ class GoogleSheetsService {
     // Process app data into structured format
     processAppData(appDataRows) {
         const appData = {};
-        
         console.log('🔍 Processing app data:', appDataRows);
-        
-        // Check if appDataRows is valid
-        if (!Array.isArray(appDataRows)) {
-            console.warn('App data is not an array, returning empty object');
+
+        if (!Array.isArray(appDataRows) || appDataRows.length === 0) {
+            console.warn('App data is not an array or empty, returning empty object');
             return appData;
         }
-        
-        // Filter out empty rows and process valid ones
-        const validRows = appDataRows.filter(row => 
-            row && Array.isArray(row) && row.length >= 3 && 
-            row[0] && row[1] && row[2]
-        );
-        
-        console.log('✅ Valid rows found:', validRows.length);
-        
-        validRows.forEach((row, index) => {
-            const [key, value, type] = row;
-            
-            try {
-                if (type === 'array') {
-                    appData[key] = value.split(',').map(item => item.trim());
-                } else if (type === 'number') {
-                    appData[key] = parseFloat(value) || parseInt(value);
-                } else {
-                    appData[key] = value;
+
+        const looksLikeObjects = typeof appDataRows[0] === 'object' && !Array.isArray(appDataRows[0]);
+
+        if (looksLikeObjects) {
+            // Expect shape: [{ key, value, type }, ...]
+            const valid = appDataRows.filter(r => r && r.key && r.value && r.type);
+            console.log('✅ Valid object rows found:', valid.length);
+
+            valid.forEach((row, index) => {
+                const { key, value, type } = row;
+                try {
+                    if (type === 'array') {
+                        appData[key] = String(value).split(',').map(item => item.trim()).filter(Boolean);
+                    } else if (type === 'number') {
+                        const n = typeof value === 'number' ? value : (parseFloat(value) || parseInt(value));
+                        appData[key] = isNaN(n) ? null : n;
+                    } else {
+                        appData[key] = value;
+                    }
+                    console.log(`✅ Processed object row ${index}: ${key} = ${value} (${type})`);
+                } catch (error) {
+                    console.warn(`Error processing object row ${index}:`, error, row);
                 }
-                console.log(`✅ Processed row ${index}: ${key} = ${value} (${type})`);
-            } catch (error) {
-                console.warn(`Error processing row ${index}:`, error, row);
-            }
-        });
+            });
+        } else {
+            // Fallback: expect array-of-arrays: [[key,value,type], ...]
+            const valid = appDataRows.filter(row => row && Array.isArray(row) && row.length >= 3 && row[0] && row[1] && row[2]);
+            console.log('✅ Valid array rows found:', valid.length);
+
+            valid.forEach((row, index) => {
+                const [key, value, type] = row;
+                try {
+                    if (type === 'array') {
+                        appData[key] = String(value).split(',').map(item => item.trim()).filter(Boolean);
+                    } else if (type === 'number') {
+                        const n = typeof value === 'number' ? value : (parseFloat(value) || parseInt(value));
+                        appData[key] = isNaN(n) ? null : n;
+                    } else {
+                        appData[key] = value;
+                    }
+                    console.log(`✅ Processed array row ${index}: ${key} = ${value} (${type})`);
+                } catch (error) {
+                    console.warn(`Error processing array row ${index}:`, error, row);
+                }
+            });
+        }
 
         console.log('🎯 Final app data:', appData);
         return appData;
