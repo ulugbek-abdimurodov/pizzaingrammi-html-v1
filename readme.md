@@ -1,6 +1,6 @@
-# 🍕 Pizzaingrammi - Professional Menu Application
+# 🍕 Pizzaingrammi - Menu App (Google Sheets + Google Photos)
 
-A modern, responsive pizza restaurant menu application built with clean architecture principles.
+A modern, responsive menu powered by Google Sheets (data) and Google Photos (images), built with a clean, modular architecture.
 
 ## 📁 Project Structure
 
@@ -15,7 +15,10 @@ pizzaingrammi-html-v1/
 │   │   │   ├── filters.js
 │   │   │   └── chatbot.js
 │   │   ├── utils/
-│   │   │   └── database-manager.js
+│   │   │   ├── google-sheets-config.js     # Spreadsheet ID, sheet names, column schema
+│   │   │   ├── google-sheets-service.js    # Fetch + normalize + cache Google Sheets data
+│   │   │   ├── database-manager.js         # Orchestrates current category, filtering, APIs
+│   │   │   └── image-normalizer.js         # Auto-sizes Google Photos (lh3) URLs
 │   │   └── app.js
 │   └── images/
 │       ├── pizzas/
@@ -23,14 +26,14 @@ pizzaingrammi-html-v1/
 │       ├── beverages/
 │       ├── desserts/
 │       └── icons/
-├── data/
+├── data/                                   # Optional sample data (not wired as fallback)
 │   ├── pizza-db.js
 │   ├── frittatina-db.js
 │   ├── beverage-db.js
 │   ├── dessert-db.js
 │   └── data.js
 ├── index.html
-└── README.md
+└── readme.md
 ```
 
 ## 🏗️ Architecture Overview
@@ -50,7 +53,10 @@ pizzaingrammi-html-v1/
   - `filters.js` - Filter management and category switching
   - `chatbot.js` - AI assistant functionality
 - **`utils/`** - Utility functions
-  - `database-manager.js` - Database abstraction layer
+  - `google-sheets-config.js` - Spreadsheet config (ID, sheet names, schema)
+  - `google-sheets-service.js` - Fetch + normalize + cache Google Sheets data
+  - `database-manager.js` - Data orchestration, category, filtering
+  - `image-normalizer.js` - Normalizes image URLs, auto-sizes Google Photos links
 - **`app.js`** - Main application controller
 
 #### **3. Presentation Layer (`/assets/`)**
@@ -73,16 +79,17 @@ pizzaingrammi-html-v1/
 
 ### **Professional Features**
 - **Clean Architecture** - Separation of concerns with modular design
-- **Database Management** - Centralized data handling with category-specific databases
-- **Real Images** - High-quality Unsplash images for all menu items
-- **Performance Optimized** - Efficient loading and rendering
+- **Google Sheets Data** - Live menu data from Sheets, cached in-browser
+- **Google Photos Images** - Paste Google Photos image URLs directly into the sheet
+- **Performance** - Auto-sized images (lh3) + batched fetching + caching
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Styling**: Tailwind CSS
-- **Images**: Unsplash API
-- **Architecture**: Clean Architecture with modular design
+- **Data**: Google Sheets API v4 (public read)
+- **Images**: Google Photos CDN (lh3.googleusercontent.com)
+- **Architecture**: Clean, modular design
 
 ## 📱 Responsive Design
 
@@ -100,14 +107,29 @@ The application is fully responsive and optimized for:
 
 ## 🔧 Development
 
-### **Local Development**
-```bash
-# Start local server
-python3 -m http.server 8000
+### **Local Development (avoid CORS with file://)**
+Serve over HTTP (not file://). Any simple server works:
 
-# Access application
-open http://localhost:8000
+```bash
+# Python 3 (recommended)
+python3 -m http.server 5173 -b 127.0.0.1
+
+# Or Node (http-server)
+npx http-server -p 5173 -a 127.0.0.1
 ```
+
+Open http://127.0.0.1:5173 in your browser.
+
+If you see CORS errors loading module scripts, you’re likely using file://. Switch to an HTTP server as above.
+
+#### Refresh Sheets Cache
+The app caches sheet data for ~5 minutes. To force refresh after editing the sheet:
+1) Open DevTools Console
+2) Run:
+```js
+await dbManager.refreshData()
+```
+3) Reload the page
 
 ### **File Organization**
 - **Database files** are in `/data/` for easy maintenance
@@ -115,17 +137,37 @@ open http://localhost:8000
 - **CSS** is centralized in `/assets/css/`
 - **Images** are categorized in `/assets/images/`
 
-## 📊 Database Structure
+## 📊 Google Sheets Setup
 
-Each database file follows a consistent structure:
-```javascript
-const CategoryDatabase = {
-    menuItems: [...],        // Menu items array
-    filterOptions: [...],    // Filter options
-    getFilteredItems(),      // Filtering logic
-    getBadgeClass()         // Badge styling
-};
-```
+Edit `assets/js/utils/google-sheets-config.js`:
+- Set `SPREADSHEET_ID` (from your Sheets URL `/d/<ID>/edit`)
+- Optionally set `API_KEY` for higher rate limits
+- Sheet tabs must exist and match: `pizzas`, `frittatinas`, `beverages`, `desserts`, `app_data`
+
+Expected columns per tab (first row):
+- pizzas/frittatinas/beverages/desserts:
+  - `id`, `name`, `description`, `price`, `category`, `tags`, `image`
+  - category/tags can be comma-separated (converted to arrays)
+- app_data:
+  - `key`, `value`, `type` (type: `array` | `number` | `string`)
+
+Example app_data rows:
+- menuCategories | Pizze,Bevande,Frittatine,Dessert | array
+- featuredItems | 1,2,3 | array
+
+## 🖼️ Images: Google Photos (for non-coders)
+
+In the sheet’s `image` column, paste a direct image URL:
+- Open the photo in Google Photos
+- Right-click the photo and select “Copy image address”
+- The URL must start with `https://lh3.googleusercontent.com/...`
+
+The app auto-sizes Google Photos links for performance.
+
+Notes:
+- Do not paste `photos.app.goo.gl/...` (that’s an HTML share page, not an image)
+- Use a desktop browser to get “Copy image address”
+- Alternatives: Google Drive public link (converted to `uc?id=...`) or host under `assets/images`
 
 ## 🎯 Key Benefits
 
