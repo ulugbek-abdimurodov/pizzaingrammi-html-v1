@@ -187,3 +187,40 @@ Notes:
 ---
 
 **Built with ❤️ for Pizzaingrammi**
+
+---
+
+## 🔐 Google API Key: Leak remediation and prevention
+
+If a Google API Key was exposed (e.g., detected by GitGuardian), do the following:
+
+1) Rotate the key
+- In Google Cloud Console → Credentials, create a new API key.
+- Delete the leaked key, or disable it immediately.
+
+2) Restrict the new key
+- Application restrictions: HTTP referrers (web sites)
+- Add only your production domains (e.g., example.com, *.example.com)
+- API restrictions: enable only the “Google Sheets API”.
+
+3) Remove the key from the codebase/history
+- Ensure no API key string appears in source files.
+- If committed in history, use GitHub’s tools (e.g., GitHub Secret Scanning remediation or BFG Repo-Cleaner) to purge history.
+
+4) Provide the key at runtime (do not commit it)
+- Option A (meta tag, set by your hosting):
+  ```html
+  <!-- Add in <head> only on the deployed site -->
+  <meta name="google-api-key" content="YOUR_PRODUCTION_KEY" />
+  ```
+- Option B (inline runtime config):
+  ```html
+  <script>
+    window.__ENV = { GOOGLE_API_KEY: 'YOUR_PRODUCTION_KEY' };
+  </script>
+  ```
+
+This project reads the key from `window.__ENV.GOOGLE_API_KEY` or `<meta name="google-api-key">`. If neither is present, it will call the Sheets API without a key (may hit lower rate limits).
+
+5) Verify
+- Deploy, load the site, and confirm requests to Sheets include `key=...` and referrer restriction works.
