@@ -25,10 +25,16 @@ jobs:
           rm -rf dist/node_modules || true
 
       - name: Inject Google API key meta (if provided)
-        if: ${{ secrets.GOOGLE_API_KEY != 'AIzaSyAVkD5Rkd-oE2cHpV2gEU8RfknhRRaKE9g' }}
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
-          # Insert meta tag before </head> in index.html
-          sed -i 's#</head>#  <meta name="google-api-key" content="${{ secrets.GOOGLE_API_KEY }}"/>\n</head>#' dist/index.html
+          # Insert meta tag before </head> in index.html, only if secret is set
+          if [ -n "${GOOGLE_API_KEY}" ]; then
+            sed -i 's#</head>#  <meta name="google-api-key" content="'"${GOOGLE_API_KEY}"'"/>\n</head>#' dist/index.html
+            echo "Injected google-api-key meta"
+          else
+            echo "GOOGLE_API_KEY not set; skipping injection"
+          fi
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
