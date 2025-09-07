@@ -19,9 +19,16 @@
 // Copy the ID between /d/ and /edit
 
 // STEP 4: Update the SPREADSHEET_ID below
+function getMetaContent(name) {
+    const m = document.querySelector(`meta[name="${name}"]`);
+    return m ? m.getAttribute('content') : '';
+}
+
 const GOOGLE_SHEETS_CONFIG = {
     SPREADSHEET_ID: '1sVGNJE8qM80ioyFWambJqPV5_lNS6xao1fqyZGrWWR0', // Replace with your actual ID
-    API_KEY: 'AIzaSyDp2vbJHmqo9qSAnDoUYzp4XRAczFTxYeM', // Optional: for higher rate limits
+    // IMPORTANT: Do NOT commit real API keys. Provide at runtime via window.__ENV.GOOGLE_API_KEY
+    // or a <meta name="google-api-key" content="..."> tag added only in deployment.
+    API_KEY: (window.__ENV && window.__ENV.GOOGLE_API_KEY) || getMetaContent('google-api-key') || '',
     
     // Sheet names (must match exactly)
     SHEETS: {
