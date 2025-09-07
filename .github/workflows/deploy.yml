@@ -25,7 +25,7 @@ jobs:
           rm -rf dist/node_modules || true
 
       - name: Inject Google API key meta (if provided)
-        if: ${{ secrets.GOOGLE_API_KEY != '' }}
+        if: ${{ secrets.GOOGLE_API_KEY != 'AIzaSyAVkD5Rkd-oE2cHpV2gEU8RfknhRRaKE9g' }}
         run: |
           # Insert meta tag before </head> in index.html
           sed -i 's#</head>#  <meta name="google-api-key" content="${{ secrets.GOOGLE_API_KEY }}"/>\n</head>#' dist/index.html
