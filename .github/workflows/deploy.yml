@@ -19,10 +19,13 @@ jobs:
         run: |
           rm -rf dist
           mkdir -p dist
-          shopt -s dotglob
-          cp -R * dist/
-          # ensure node_modules or tooling folders (if any) are not copied
-          rm -rf dist/node_modules || true
+          # Copy project files into dist, excluding dist itself and tooling folders
+          rsync -a --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude 'dist' \
+            ./ dist/
 
       - name: Inject Google API key meta (if provided)
         env:
