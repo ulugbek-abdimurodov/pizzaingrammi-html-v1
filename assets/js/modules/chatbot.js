@@ -1,4 +1,5 @@
 // Complete Working Chatbot for Pizzaingrammi - FIXED VERSION
+import { normalizeImageUrl } from '../utils/image-normalizer.js';
 // assets/js/modules/chatbot.js
 
 // Chatbot Responses
@@ -648,16 +649,17 @@ class PizzaChatbot {
         const cardElement = document.createElement('div');
         cardElement.className = 'animate-fade-in';
         
-        const badgesHTML = pizza.category.map(cat => {
+    const badgesHTML = pizza.category.map(cat => {
             const badgeClass = typeof PizzaDatabase !== 'undefined' && PizzaDatabase.getBadgeClass ? 
                 PizzaDatabase.getBadgeClass(cat) : 'bg-gray-600 text-white';
             return `<span class="text-xs px-2 py-1 rounded-full ${badgeClass}">${cat}</span>`;
         }).join('');
+    const img = normalizeImageUrl(pizza.image, { width: 256, height: 256 });
         
         cardElement.innerHTML = `
             <div class="bg-[#494422] rounded-lg p-3 mb-2 hover:bg-[#5a4d2a] transition-colors cursor-pointer pizza-recommendation border border-[#685f31]" data-pizza-id="${pizza.id}">
                 <div class="flex gap-3">
-                    <img src="${pizza.image}" alt="${pizza.name}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0" loading="lazy">
+                    <img src="${img}" alt="${pizza.name}" class="w-16 h-16 object-cover rounded-lg flex-shrink-0" loading="lazy">
                     <div class="flex-1 min-w-0">
                         <h4 class="text-white font-bold text-sm mb-1">${pizza.name}</h4>
                         <p class="text-[#cbc190] text-xs mb-2 line-clamp-2">${pizza.description}</p>

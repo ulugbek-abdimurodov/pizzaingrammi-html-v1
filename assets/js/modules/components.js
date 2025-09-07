@@ -1,4 +1,6 @@
 // Components Module
+import { normalizeImageUrl } from '../utils/image-normalizer.js';
+
 export const Components = {
     // Header component
     createHeader() {
@@ -42,14 +44,16 @@ export const Components = {
                 `;
             }
             
-            const featuredHTML = featuredItems.map(item => `
+            const featuredHTML = featuredItems.map(item => {
+                const img = normalizeImageUrl(item.image, { width: 640, height: 360 });
+                return `
                 <div class="flex-shrink-0 w-64">
                     <div class="bg-center bg-no-repeat aspect-video bg-cover rounded-xl mb-3" 
-                         style='background-image: url("${item.image}");'></div>
+                         style='background-image: url("${img}");'></div>
                     <h3 class="text-white text-base font-bold leading-tight mb-1">${item.name || item.title}</h3>
                     <p class="text-[#cbc190] text-sm font-normal leading-normal">${item.description}</p>
                 </div>
-            `).join('');
+            `;}).join('');
 
             return `
                 <h2 class="section-title">Hot 🔥</h2>
@@ -92,22 +96,23 @@ export const Components = {
                 
                 // Get the appropriate icon for each category
                 let categoryIcon;
-                switch (categoryId) {
+        switch (categoryId) {
                     case 'pizzas':
-                        categoryIcon = './assets/images/pizzas/pizza-icon.JPG';
+            categoryIcon = './assets/images/pizzas/pizza-icon.JPG';
                         break;
                     case 'beverages':
-                        categoryIcon = './assets/images/beverages/coca-cola-icon.jpg';
+            categoryIcon = './assets/images/beverages/coca-cola-icon.jpg';
                         break;
                     case 'frittatinas':
-                        categoryIcon = './assets/images/frittatine/frittatina-icon.jpg';
+            categoryIcon = './assets/images/frittatine/frittatina-icon.jpg';
                         break;
                     case 'desserts':
-                        categoryIcon = './assets/images/desserts/tiramisu.jpg';
+            categoryIcon = './assets/images/desserts/tiramisu.jpg';
                         break;
                     default:
                         categoryIcon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iOCIgZmlsbD0iIzY4NWYzMSIvPgo8L3N2Zz4K';
                 }
+        const iconUrl = normalizeImageUrl(categoryIcon, { width: 80, height: 80 });
                 
                 // Set first category (Pizze) as active by default
                 const isActive = index === 0;
@@ -116,8 +121,8 @@ export const Components = {
                 return `
                     <a class="flex flex-col items-center justify-center border-b-[3px] ${activeClass} gap-2 pb-[7px] pt-2.5" 
                        href="#" data-category="${categoryId}" onclick="window.switchCategory('${categoryId}')">
-                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
-                             style='background-image: url("${categoryIcon}");'></div>
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
+                        style='background-image: url("${iconUrl}");'></div>
                         <p class="text-sm font-bold leading-normal tracking-[0.015em]">${categoryLabel}</p>
                     </a>
                 `;
@@ -209,6 +214,7 @@ export const Components = {
                 ? `<p class="text-[#cbc190] text-sm font-normal leading-normal">${item.tags[0].charAt(0).toUpperCase() + item.tags[0].slice(1)}</p>`
                 : '';
 
+            const img = normalizeImageUrl(item.image, { width: 800, height: 450 });
             return `
                 <div class="p-4 pizza-item fade-in" data-category="${Array.isArray(item.category) ? item.category.join(' ') : item.category}" data-name="${item.name.toLowerCase()}" data-id="${item.id}">
                     <div class="flex items-stretch justify-between gap-4 rounded-xl pizza-item-content">
@@ -226,7 +232,7 @@ export const Components = {
                             </div>
                         </div>
                         <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1 pizza-item-image" 
-                             style='background-image: url("${item.image}");'></div>
+                             style='background-image: url("${img}");'></div>
                     </div>
                 </div>
             `;

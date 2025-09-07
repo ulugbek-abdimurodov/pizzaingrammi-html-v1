@@ -47,6 +47,11 @@ const GOOGLE_SHEETS_CONFIG = {
 
 // STEP 5: Data Format Examples
 /*
+IMAGE FIELD (important for non-coders)
+- In the 'image' column, paste a direct image URL.
+- For Google Photos, open the photo and choose "Copy image address" so the URL starts with https://lh3.googleusercontent.com/... (not photos.app.goo.gl/...)
+- The app will auto-resize Google Photos links for performance.
+
 PIZZAS SHEET FORMAT:
 | id | name | description | price | category | tags | image |
 |----|------|-------------|-------|----------|------|-------|
